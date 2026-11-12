@@ -219,74 +219,65 @@ function showWeather(code) {
 }
 
 // --- 3. 釣りミニゲーム・ショップ・経済システム ---
-function getFishSVG(type, colorMain, colorSub) {
-    if (type === "squid") {
-        return `<svg width="64" height="40" viewBox="0 0 80 50">
-            <path d="M25,15 L55,8 L72,25 L55,42 L25,35 Z" fill="${colorMain}" stroke="#111" stroke-width="2"/>
-            <path d="M25,18 L5,14 M25,22 L3,21 M25,28 L3,29 M25,32 L5,36" stroke="${colorMain}" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="30" cy="21" r="2.5" fill="#111"/>
-            <circle cx="30" cy="29" r="2.5" fill="#111"/>
-        </svg>`;
-    } else if (type === "flat") {
-        return `<svg width="64" height="40" viewBox="0 0 80 50">
-            <ellipse cx="42" cy="25" rx="28" ry="16" fill="${colorMain}" stroke="#111" stroke-width="2"/>
-            <polygon points="14,25 3,15 3,35" fill="${colorSub}" stroke="#111" stroke-width="2"/>
-            <circle cx="58" cy="21" r="2.2" fill="#111"/>
-            <circle cx="56" cy="27" r="2.2" fill="#111"/>
-            <circle cx="40" cy="20" r="1.5" fill="${colorSub}"/>
-            <circle cx="32" cy="28" r="1.5" fill="${colorSub}"/>
-        </svg>`;
-    } else if (type === "tuna" || type === "salmon") {
-        return `<svg width="70" height="42" viewBox="0 0 90 50">
-            <path d="M18,25 Q45,5 82,25 Q45,45 18,25 Z" fill="${colorMain}" stroke="#111" stroke-width="2"/>
-            <path d="M22,25 Q48,16 80,25 Q48,38 22,25 Z" fill="${colorSub}"/>
-            <polygon points="18,25 4,10 10,25 4,40" fill="${colorMain}" stroke="#111" stroke-width="2"/>
-            <polygon points="48,13 42,4 54,13" fill="${colorSub}" stroke="#111" stroke-width="1.5"/>
-            <circle cx="70" cy="22" r="2.5" fill="#111"/>
-        </svg>`;
-    } else if (type === "oarfish" || type === "seahorse") {
-        return type === "seahorse" ? 
-        `<svg width="50" height="40" viewBox="0 0 60 50">
-            <path d="M30,10 Q40,15 35,25 Q30,35 25,40 Q20,45 25,48 Q32,45 35,38" fill="none" stroke="${colorMain}" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="28" cy="12" r="6" fill="${colorMain}" stroke="#111" stroke-width="1.5"/>
-            <circle cx="26" cy="11" r="1.5" fill="#111"/>
-        </svg>` :
-        `<svg width="74" height="42" viewBox="0 0 95 50">
-            <path d="M8,28 Q28,12 48,26 T86,22 Q72,34 48,32 T8,28 Z" fill="${colorMain}" stroke="#111" stroke-width="2"/>
-            <path d="M78,19 L84,6 L74,17 L76,7 L68,18" fill="none" stroke="${colorSub}" stroke-width="2.5" stroke-linecap="round"/>
-            <circle cx="78" cy="23" r="2.5" fill="#111"/>
-        </svg>`;
+function getFishSVG(fishId) {
+    if (fishId === "aji") {
+        return `<svg width="72" height="42" viewBox="0 0 90 50"><path d="M15,25 Q45,2 80,25 Q45,48 15,25 Z" fill="#7ea8be" stroke="#111" stroke-width="2"/><path d="M15,25 L45,18 L80,25" fill="none" stroke="#46687a" stroke-width="1.5"/><polygon points="15,25 3,12 8,25 3,38" fill="#7ea8be" stroke="#111" stroke-width="2"/><polygon points="48,10 40,2 52,10" fill="#a8dadc" stroke="#111" stroke-width="1.5"/><circle cx="68" cy="22" r="2.5" fill="#111"/><circle cx="68" cy="22" r="1" fill="#fff"/></svg>`;
+    } else if (fishId === "iwashi") {
+        return `<svg width="72" height="42" viewBox="0 0 90 50"><path d="M10,26 Q45,10 82,26 Q45,40 10,26 Z" fill="#90e0ef" stroke="#111" stroke-width="2"/><path d="M20,24 Q50,15 78,24" stroke="#ffffff" stroke-width="2" fill="none"/><polygon points="10,26 2,16 6,26 2,36" fill="#90e0ef" stroke="#111" stroke-width="2"/><polygon points="50,13 45,5 55,13" fill="#0077b6" stroke="#111" stroke-width="1.5"/><circle cx="70" cy="23" r="2" fill="#111"/></svg>`;
+    } else if (fishId === "saba") {
+        return `<svg width="72" height="42" viewBox="0 0 90 50"><path d="M15,25 Q45,5 82,25 Q45,45 15,25 Z" fill="#3d5a80" stroke="#111" stroke-width="2"/><path d="M30,16 Q40,22 35,28 M45,14 Q55,20 50,26 M60,15 Q68,22 64,28" stroke="#111" stroke-width="1.5" fill="none"/><polygon points="15,25 4,11 10,25 4,39" fill="#293241" stroke="#111" stroke-width="2"/><polygon points="50,11 44,3 56,11" fill="#98c1d9" stroke="#111" stroke-width="1.5"/><circle cx="70" cy="22" r="2.5" fill="#111"/></svg>`;
+    } else if (fishId === "kasago") {
+        return `<svg width="72" height="42" viewBox="0 0 90 50"><path d="M20,20 C35,10 65,12 78,24 C70,36 40,38 20,30 Z" fill="#bc4749" stroke="#111" stroke-width="2"/><path d="M35,13 L42,4 L50,15" fill="#f28482" stroke="#111" stroke-width="1.5"/><path d="M70,24 L82,18 L80,32 Z" fill="#a73234" stroke="#111" stroke-width="1.5"/><circle cx="62" cy="20" r="3" fill="#ffe66d"/><circle cx="62" cy="20" r="1.5" fill="#111"/></svg>`;
+    } else if (fishId === "kisu") {
+        return `<svg width="72" height="42" viewBox="0 0 90 50"><path d="M12,25 Q48,12 82,25 Q48,38 12,25 Z" fill="#f8edeb" stroke="#111" stroke-width="2"/><polygon points="12,25 2,17 6,25 2,33" fill="#fcd5ce" stroke="#111" stroke-width="2"/><polygon points="52,14 48,6 58,14" fill="#e3d5ca" stroke="#111" stroke-width="1.5"/><circle cx="70" cy="23" r="2" fill="#111"/></svg>`;
+    } else if (fishId === "kumanomi") {
+        return `<svg width="72" height="42" viewBox="0 0 90 50"><path d="M22,16 C45,12 68,16 75,25 C68,34 45,38 22,34 C16,28 16,22 22,16 Z" fill="#ff7b00" stroke="#111" stroke-width="2"/><path d="M38,15 L35,35 M58,18 L55,32" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/><path d="M70,20 L82,15 L80,30 L70,25 Z" fill="#ff9f43" stroke="#111" stroke-width="1.5"/><circle cx="62" cy="22" r="2.2" fill="#111"/></svg>`;
+    } else if (fishId === "tatsunootoshigo") {
+        return `<svg width="52" height="44" viewBox="0 0 60 50"><path d="M30,8 Q42,12 36,24 Q30,34 24,40 Q18,46 24,48 Q32,45 38,36" fill="none" stroke="#52b788" stroke-width="5" stroke-linecap="round"/><circle cx="28" cy="11" r="7" fill="#52b788" stroke="#111" stroke-width="1.5"/><circle cx="26" cy="10" r="2" fill="#111"/><path d="M35,18 L44,14 L38,22" fill="#d8f3dc" stroke="#111" stroke-width="1.5"/></svg>`;
+    } else if (fishId === "madai") {
+        return `<svg width="76" height="44" viewBox="0 0 90 50"><path d="M15,25 Q45,2 80,25 Q45,48 15,25 Z" fill="#ff758f" stroke="#111" stroke-width="2"/><path d="M42,7 L38,2 L48,10 M52,7 L55,1 L58,10" fill="none" stroke="#ffb3c1" stroke-width="2"/><polygon points="15,25 2,8 8,25 2,42" fill="#ff758f" stroke="#111" stroke-width="2"/><circle cx="66" cy="21" r="3" fill="#ffe66d"/><circle cx="66" cy="21" r="1.5" fill="#111"/></svg>`;
+    } else if (fishId === "hirame") {
+        return `<svg width="76" height="44" viewBox="0 0 90 50"><ellipse cx="45" cy="25" rx="32" ry="18" fill="#b08968" stroke="#111" stroke-width="2"/><polygon points="13,25 2,12 2,38" fill="#ddb892" stroke="#111" stroke-width="2"/><circle cx="60" cy="20" r="2.5" fill="#111"/><circle cx="60" cy="26" r="2.5" fill="#111"/><path d="M35,18 Q45,14 55,22" stroke="#7f5539" stroke-width="1.5" fill="none"/></svg>`;
+    } else if (fishId === "aoriika") {
+        return `<svg width="72" height="44" viewBox="0 0 80 50"><path d="M22,14 L58,8 L72,25 L58,42 L22,36 Z" fill="#f4a261" stroke="#111" stroke-width="2"/><path d="M22,14 Q32,25 22,36" fill="#e76f51" stroke="#111" stroke-width="2"/><path d="M22,20 L6,12 M22,25 L3,24 M22,30 L6,38" stroke="#f4a261" stroke-width="3" stroke-linecap="round"/><circle cx="58" cy="21" r="2.5" fill="#111"/><circle cx="58" cy="29" r="2.5" fill="#111"/></svg>`;
+    } else if (fishId === "katsuo") {
+        return `<svg width="76" height="44" viewBox="0 0 90 50"><path d="M15,25 Q45,4 82,25 Q45,46 15,25 Z" fill="#2b2d42" stroke="#111" stroke-width="2"/><path d="M30,18 L65,28 M35,22 L70,33 M40,26 L74,38" stroke="#8d99ae" stroke-width="2.5" fill="none"/><polygon points="15,25 3,9 9,25 3,41" fill="#2b2d42" stroke="#111" stroke-width="2"/><polygon points="50,11 44,2 56,11" fill="#8d99ae" stroke="#111" stroke-width="1.5"/><circle cx="72" cy="22" r="2.5" fill="#111"/></svg>`;
+    } else if (fishId === "kanpachi") {
+        return `<svg width="76" height="44" viewBox="0 0 90 50"><path d="M15,25 Q45,4 82,25 Q45,46 15,25 Z" fill="#e9c46a" stroke="#111" stroke-width="2"/><path d="M60,16 L72,22" stroke="#d4a373" stroke-width="3"/><polygon points="15,25 3,9 9,25 3,41" fill="#f4a261" stroke="#111" stroke-width="2"/><polygon points="52,10 45,2 56,10" fill="#e9c46a" stroke="#111" stroke-width="1.5"/><circle cx="70" cy="22" r="2.5" fill="#111"/></svg>`;
+    } else if (fishId === "golden_salmon") {
+        return `<svg width="76" height="44" viewBox="0 0 90 50"><path d="M15,25 Q45,4 82,25 Q45,46 15,25 Z" fill="#ffd700" stroke="#b45309" stroke-width="2.5"/><path d="M35,16 Q45,24 38,32 M52,14 Q62,22 55,32" stroke="#ff4500" stroke-width="2" fill="none"/><polygon points="15,25 3,9 9,25 3,41" fill="#ff8c00" stroke="#b45309" stroke-width="2"/><polygon points="50,11 43,2 57,11" fill="#ff4500" stroke="#b45309" stroke-width="1.5"/><circle cx="70" cy="22" r="3" fill="#ffffff"/><circle cx="70" cy="22" r="1.5" fill="#000"/></svg>`;
+    } else if (fishId === "kuromaguro") {
+        return `<svg width="76" height="44" viewBox="0 0 90 50"><path d="M12,25 Q45,2 84,25 Q45,48 12,25 Z" fill="#1d3557" stroke="#0b1329" stroke-width="2.5"/><polygon points="12,25 1,5 7,25 1,45" fill="#111827" stroke="#0b1329" stroke-width="2"/><polygon points="46,8 39,1 51,9" fill="#457b9d" stroke="#0b1329" stroke-width="1.5"/><polygon points="55,8 49,1 60,9" fill="#457b9d" stroke="#0b1329" stroke-width="1.5"/><circle cx="74" cy="22" r="2.5" fill="#38bdf8"/></svg>`;
+    } else if (fishId === "ryugu") {
+        return `<svg width="78" height="44" viewBox="0 0 95 50"><path d="M6,26 Q28,12 50,25 T90,24 Q75,36 50,34 T6,26 Z" fill="#e2e8f0" stroke="#475569" stroke-width="2"/><path d="M74,17 L86,3 L72,15 L78,5 L66,16" fill="none" stroke="#e63946" stroke-width="3" stroke-linecap="round"/><path d="M12,26 L6,18 M20,25 L16,16 M28,24 L24,15" stroke="#e63946" stroke-width="2.5" stroke-linecap="round"/><circle cx="80" cy="22" r="2.5" fill="#ef4444"/></svg>`;
+    } else if (fishId === "megalodon") {
+        return `<svg width="80" height="46" viewBox="0 0 95 50"><path d="M10,26 C30,6 65,8 86,22 C75,40 35,42 10,26 Z" fill="#111827" stroke="#030712" stroke-width="2.5"/><path d="M42,6 L35,-3 L50,8" fill="#1f2937" stroke="#030712" stroke-width="2"/><path d="M68,26 L82,38 L72,32 Z" fill="#1f2937" stroke="#030712" stroke-width="2"/><path d="M12,28 L18,34 M16,28 L22,34 M20,28 L26,34" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><polygon points="10,26 0,10 6,26 0,42" fill="#111827" stroke="#030712" stroke-width="2"/><circle cx="76" cy="18" r="3" fill="#ef4444"/><circle cx="76" cy="18" r="1" fill="#fff"/></svg>`;
     } else {
-        return `<svg width="64" height="40" viewBox="0 0 80 50">
-            <path d="M18,25 Q45,8 72,25 Q45,42 18,25 Z" fill="${colorMain}" stroke="#111" stroke-width="2"/>
-            <polygon points="18,25 5,13 8,25 5,37" fill="${colorSub}" stroke="#111" stroke-width="2"/>
-            <polygon points="44,15 36,7 52,15" fill="${colorSub}" stroke="#111" stroke-width="1.5"/>
-            <circle cx="60" cy="22" r="2.5" fill="#111"/>
-        </svg>`;
+        return `<svg width="64" height="40" viewBox="0 0 80 50"><path d="M18,25 Q45,8 72,25 Q45,42 18,25 Z" fill="#7ea8be" stroke="#111" stroke-width="2"/><polygon points="18,25 5,13 8,25 5,37" fill="#a8dadc" stroke="#111" stroke-width="2"/><circle cx="60" cy="22" r="2.5" fill="#111"/></svg>`;
     }
 }
 
 // 魚データ（全16種）
 const FISH_LIST = [
-    { id: "aji", name: "マアジ", rarity: 1, price: 100, svg: getFishSVG("normal", "#7ea8be", "#a8dadc"), zoneWidth: 28, speed: 1.1, erratic: false, desc: "防波堤の定番。まずはここから。" },
-    { id: "iwashi", name: "マイワシ", rarity: 1, price: 80, svg: getFishSVG("normal", "#90e0ef", "#caf0f8"), zoneWidth: 26, speed: 1.2, erratic: false, desc: "群れで泳ぐ銀色の小魚。" },
-    { id: "saba", name: "マサバ", rarity: 1, price: 150, svg: getFishSVG("normal", "#3d5a80", "#98c1d9"), zoneWidth: 24, speed: 1.35, erratic: false, desc: "引きが強く釣りごたえがある。" },
-    { id: "kasago", name: "カサゴ", rarity: 1, price: 140, svg: getFishSVG("normal", "#bc4749", "#f28482"), zoneWidth: 24, speed: 1.3, erratic: false, desc: "岩陰に潜む根魚の代表格。" },
-    { id: "kisu", name: "シロギス", rarity: 1, price: 160, svg: getFishSVG("normal", "#f8edeb", "#fcd5ce"), zoneWidth: 22, speed: 1.45, erratic: false, desc: "砂浜の女王と呼ばれる美しい魚。" },
-    { id: "kumanomi", name: "クマノミ", rarity: 1, price: 200, svg: getFishSVG("normal", "#ff7b00", "#ffffff"), zoneWidth: 25, speed: 1.25, erratic: false, desc: "南国の海からやってきた鮮やかなオレンジの小魚。" },
-    { id: "tatsunootoshigo", name: "タツノオトシゴ", rarity: 1, price: 250, svg: getFishSVG("seahorse", "#52b788", "#d8f3dc"), zoneWidth: 27, speed: 1.0, erratic: false, desc: "ゆったりと漂う、ユニークな姿の小型魚。" },
+    { id: "aji", name: "マアジ", rarity: 1, price: 100, zoneWidth: 28, speed: 1.1, erratic: false, desc: "防波堤の定番。まずはここから。" },
+    { id: "iwashi", name: "マイワシ", rarity: 1, price: 80, zoneWidth: 26, speed: 1.2, erratic: false, desc: "群れで泳ぐ銀色の小魚。" },
+    { id: "saba", name: "マサバ", rarity: 1, price: 150, zoneWidth: 24, speed: 1.35, erratic: false, desc: "引きが強く釣りごたえがある。" },
+    { id: "kasago", name: "カサゴ", rarity: 1, price: 140, zoneWidth: 24, speed: 1.3, erratic: false, desc: "岩陰に潜む根魚の代表格。" },
+    { id: "kisu", name: "シロギス", rarity: 1, price: 160, zoneWidth: 22, speed: 1.45, erratic: false, desc: "砂浜の女王と呼ばれる美しい魚。" },
+    { id: "kumanomi", name: "クマノミ", rarity: 1, price: 200, zoneWidth: 25, speed: 1.25, erratic: false, desc: "南国の海からやってきた鮮やかなオレンジの小魚。" },
+    { id: "tatsunootoshigo", name: "タツノオトシゴ", rarity: 1, price: 250, zoneWidth: 27, speed: 1.0, erratic: false, desc: "ゆったりと漂う、ユニークな姿の小型魚。" },
 
-    { id: "madai", name: "マダイ", rarity: 2, price: 600, svg: getFishSVG("normal", "#ff758f", "#ffb3c1"), zoneWidth: 14, speed: 2.1, erratic: false, desc: "魚の王様。力強い引きに注意！" },
-    { id: "hirame", name: "ヒラメ", rarity: 2, price: 750, svg: getFishSVG("flat", "#b08968", "#ddb892"), zoneWidth: 13, speed: 2.3, erratic: false, desc: "海底に潜む高級フラットフィッシュ。" },
-    { id: "aoriika", name: "アオリイカ", rarity: 2, price: 700, svg: getFishSVG("squid", "#f4a261", "#e76f51"), zoneWidth: 12, speed: 2.5, erratic: false, desc: "イカの王様。独特のジェット噴射。" },
-    { id: "katsuo", name: "カツオ", rarity: 2, price: 800, svg: getFishSVG("tuna", "#2b2d42", "#8d99ae"), zoneWidth: 12.5, speed: 2.4, erratic: false, desc: "勢いよく泳ぐ、一本釣りの名優。" },
-    { id: "kanpachi", name: "カンパチ", rarity: 2, price: 950, svg: getFishSVG("normal", "#e9c46a", "#f4a261"), zoneWidth: 11, speed: 2.6, erratic: false, desc: "力強い引きを誇る大型回遊魚。" },
+    { id: "madai", name: "マダイ", rarity: 2, price: 600, zoneWidth: 14, speed: 2.1, erratic: false, desc: "魚の王様。力強い引きに注意！" },
+    { id: "hirame", name: "ヒラメ", rarity: 2, price: 750, zoneWidth: 13, speed: 2.3, erratic: false, desc: "海底に潜む高級フラットフィッシュ。" },
+    { id: "aoriika", name: "アオリイカ", rarity: 2, price: 700, zoneWidth: 12, speed: 2.5, erratic: false, desc: "イカの王様。独特のジェット噴射。" },
+    { id: "katsuo", name: "カツオ", rarity: 2, price: 800, zoneWidth: 12.5, speed: 2.4, erratic: false, desc: "勢いよく泳ぐ、一本釣りの名優。" },
+    { id: "kanpachi", name: "カンパチ", rarity: 2, price: 950, zoneWidth: 11, speed: 2.6, erratic: false, desc: "力強い引きを誇る大型回遊魚。" },
 
-    { id: "golden_salmon", name: "黄金のサーモン", rarity: 3, price: 2500, svg: getFishSVG("salmon", "#ffd700", "#ff4500"), zoneWidth: 7.0, speed: 3.2, erratic: true, desc: "【激ムズ】全身が黄金色に輝く、超低確率の幻のサケ！" },
-    { id: "kuromaguro", name: "クロマグロ", rarity: 3, price: 3000, svg: getFishSVG("tuna", "#1d3557", "#457b9d"), zoneWidth: 6.0, speed: 3.5, erratic: true, desc: "【激ムズ】海の黒いダイヤ。超高速＆緩急をつけて暴れる！" },
-    { id: "ryugu", name: "リュウグウノツカイ", rarity: 3, price: 4000, svg: getFishSVG("oarfish", "#e2e8f0", "#e63946"), zoneWidth: 5.0, speed: 3.9, erratic: true, desc: "【激ムズ】深海の神秘。極小ゾーンと変則スピードを制せ！" },
+    { id: "golden_salmon", name: "黄金のサーモン", rarity: 3, price: 2500, zoneWidth: 7.0, speed: 3.2, erratic: true, desc: "【激ムズ】全身が黄金色に輝く、超低確率の幻のサケ！" },
+    { id: "kuromaguro", name: "クロマグロ", rarity: 3, price: 3000, zoneWidth: 6.0, speed: 3.5, erratic: true, desc: "【激ムズ】海の黒いダイヤ。超高速＆緩急をつけて暴れる！" },
+    { id: "ryugu", name: "リュウグウノツカイ", rarity: 3, price: 4000, zoneWidth: 5.0, speed: 3.9, erratic: true, desc: "【激ムズ】深海の神秘。極小ゾーンと変則スピードを制せ！" },
 
-    { id: "megalodon", name: "古代巨鮫メガロドン", rarity: 4, price: 10000, svg: getFishSVG("tuna", "#111827", "#374151"), zoneWidth: 5.0, speed: 3.8, erratic: true, desc: "【星4超伝説】ウキ大の波動に引き寄せられた古代の海王！" }
+    { id: "megalodon", name: "古代巨鮫メガロドン", rarity: 4, price: 10000, zoneWidth: 5.0, speed: 3.8, erratic: true, desc: "【星4超伝説】ウキ大の波動に引き寄せられた古代の海王！" }
 ];
 
 const RODS = [
@@ -300,7 +291,7 @@ const FLOATS = [
     { id: "none", name: "ノーマルウキ", rarityBonus: 0, price: 0 },
     { id: "float_s", name: "名人のウキ・小", rarityBonus: 1, price: 1500, desc: "レア度2以上の魚が釣りやすくなる" },
     { id: "float_m", name: "名人のウキ・中", rarityBonus: 2, price: 5000, desc: "レア度3の出現率がアップする" },
-    { id: "float_l", name: "伝説のウキ・大", rarityBonus: 3, price: 12000, desc: "星4の魚やレア魚が続出する最強のウキ！" }
+    { id: "float_l", name: "伝説のウキ・大", rarityBonus: 3, price: 12000, desc: "星4の魚（約5%）やレア魚が続出する最強のウキ！" }
 ];
 
 let playerMoney = Number(localStorage.getItem("natsumu_money")) || 0;
@@ -369,6 +360,33 @@ const catchIllust = document.getElementById("catch-illust");
 const catchName = document.getElementById("catch-name");
 const catchDesc = document.getElementById("catch-desc");
 const closeModalBtn = document.getElementById("close-modal-btn");
+
+// コンプリート祝福モーダル
+const completeModal = document.createElement("div");
+completeModal.className = "complete-modal";
+completeModal.id = "complete-modal";
+completeModal.innerHTML = `
+    <div class="complete-card">
+        <div class="complete-trophy">🏆</div>
+        <h2>祝・図鑑コンプリート！</h2>
+        <p>おめでとうございます！全16種類のすべての魚を釣り上げ、伝説の漁師となりました！</p>
+        <button id="close-complete-btn" class="game-btn">最高の気分だ！</button>
+    </div>
+`;
+document.body.appendChild(completeModal);
+
+const closeCompleteBtn = document.getElementById("close-complete-btn");
+closeCompleteBtn.addEventListener("click", () => {
+    completeModal.classList.remove("active");
+});
+
+// いつでもお祝いを見られるボタン
+const showCompleteBtn = document.getElementById("show-complete-btn");
+if (showCompleteBtn) {
+    showCompleteBtn.addEventListener("click", () => {
+        completeModal.classList.add("active");
+    });
+}
 
 updateWalletUI();
 renderShop();
@@ -728,7 +746,6 @@ function triggerHook() {
     if (gameState === "biting") {
         cancelAnimationFrame(animFrameId);
 
-        // ★ 厳密な判定（ゾーンの中に完全に収まっているときのみ成功）
         const hitMin = zoneStart;
         const hitMax = zoneStart + zoneWidth;
 
@@ -745,8 +762,9 @@ function triggerHook() {
             showCatchModal(currentFish, isNew);
             const stars = "★".repeat(currentFish.rarity);
             finishTurn(`🎉 大成功！【${stars} ${currentFish.name}】を釣り上げた！（売却倉庫に追加）`);
+
+            checkCompletion();
         } else {
-            // ★ 失敗時に魚の正体を言わないシンプルなメッセージに変更
             finishTurn("💨 惜しい！タイミングが合わず糸を切られてしまった...");
         }
     }
@@ -763,6 +781,11 @@ document.addEventListener("keydown", (e) => {
             catchModal.classList.remove("active");
             return;
         }
+        if (completeModal.classList.contains("active")) {
+            e.preventDefault();
+            completeModal.classList.remove("active");
+            return;
+        }
         if (gameState === "idle" && !castBtn.disabled) {
             e.preventDefault();
             triggerCast();
@@ -777,7 +800,7 @@ function showCatchModal(fish, isNew) {
     const stars = "★".repeat(fish.rarity);
     catchRarity.textContent = stars;
     catchRarity.className = "catch-rarity rarity-" + fish.rarity;
-    catchIllust.innerHTML = fish.svg;
+    catchIllust.innerHTML = getFishSVG(fish.id);
     catchName.textContent = fish.name;
     catchDesc.textContent = fish.desc + ` (売値: ${fish.price.toLocaleString()}🪙)`;
 
@@ -790,6 +813,27 @@ if (closeModalBtn) {
     closeModalBtn.addEventListener("click", () => {
         catchModal.classList.remove("active");
     });
+}
+
+function checkCompletion() {
+    let unlockedCount = 0;
+    FISH_LIST.forEach(fish => {
+        if (caughtData[fish.id] > 0) unlockedCount++;
+    });
+
+    if (unlockedCount >= FISH_LIST.length) {
+        // コンプリートボタンを表示する
+        if (showCompleteBtn) {
+            showCompleteBtn.style.display = "inline-block";
+        }
+        setTimeout(() => {
+            completeModal.classList.add("active");
+        }, 600);
+    } else {
+        if (showCompleteBtn) {
+            showCompleteBtn.style.display = "none";
+        }
+    }
 }
 
 function finishTurn(message) {
@@ -819,7 +863,7 @@ function renderDex() {
         const stars = "★".repeat(fish.rarity);
         card.innerHTML = `
             <div class="fish-rarity rarity-${fish.rarity}">${stars}</div>
-            <div class="fish-svg-box">${fish.svg}</div>
+            <div class="fish-svg-box">${getFishSVG(fish.id)}</div>
             <div class="fish-name">${isUnlocked ? fish.name : "？？？"}</div>
             <div class="fish-count">${isUnlocked ? `釣った数: ${count}匹` : fish.desc}</div>
         `;
@@ -827,6 +871,9 @@ function renderDex() {
     });
 
     if (dexCountEl) dexCountEl.textContent = unlockedCount;
+
+    // 図鑑描画時にコンプリート状態を毎回チェックしてボタンの表示を同期
+    checkCompletion();
 }
 
 if (resetDexBtn) {
@@ -838,6 +885,7 @@ if (resetDexBtn) {
             localStorage.removeItem("natsumu_fishing_dex");
             localStorage.removeItem("natsumu_fish_inventory");
             localStorage.removeItem("natsumu_money");
+            if (showCompleteBtn) showCompleteBtn.style.display = "none";
             updateWalletUI();
             renderShop();
             renderSellList();

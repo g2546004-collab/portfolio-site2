@@ -204,9 +204,13 @@
                 </div>
 
                 <div class="fish-dex-header">
-                    <h4>釣果図鑑 (<span id="dex-count">0</span> / 16)</h4>
-                    <button id="reset-dex-btn" class="reset-btn">記録リセット</button>
-                </div>
+    <h4>釣果図鑑 (<span id="dex-count">0</span> / 16)</h4>
+    <div style="display: flex; gap: 8px; align-items: center;">
+        <!-- コンプリート者専用の閲覧ボタン（最初は非表示） -->
+        <button id="show-complete-btn" class="complete-badge-btn" style="display: none;">🏆 お祝いを見る</button>
+        <button id="reset-dex-btn" class="reset-btn">記録リセット</button>
+    </div>
+</div>
                 <div id="fish-dex-grid" class="fish-dex-grid"></div>
             </section>
         </main>

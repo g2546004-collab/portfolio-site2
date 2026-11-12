@@ -743,3 +743,97 @@ body.weather-rainy { background-color: #cbd9e5; }
 }
 
 .upload-form-container button { width: 100%; margin-top: 4px; }
+
+/* 図鑑コンプリート祝福モーダル */
+.complete-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.complete-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.complete-card {
+    text-align: center;
+    padding: 30px 25px;
+    border: 2px solid #ffd700;
+    background: linear-gradient(135deg, #fffcf0 0%, #fff0b3 100%);
+    width: 85%;
+    max-width: 380px;
+    box-shadow: 6px 6px 0px #b45309;
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.complete-modal.active .complete-card {
+    transform: translateY(0);
+}
+
+.complete-trophy {
+    font-size: 54px;
+    margin-bottom: 5px;
+    animation: bounceTrophy 1s infinite alternate ease-in-out;
+}
+
+@keyframes bounceTrophy {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+}
+
+.complete-card h2 {
+    margin: 5px 0 10px;
+    font-size: 20px;
+    color: #92400e;
+}
+
+.complete-card p {
+    margin: 0 0 20px;
+    font-size: 13px;
+    color: #451a03;
+    line-height: 1.5;
+}
+
+.complete-card .game-btn {
+    background: #d97706;
+    color: #ffffff;
+    border-color: #92400e;
+    padding: 10px 24px;
+    font-size: 14px;
+}
+
+.complete-card .game-btn:hover {
+    background: #b45309;
+}
+
+/* コンプリート者専用ボタンのスタイル */
+.complete-badge-btn {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);
+    border: 1px solid #ca8a04;
+    color: #713f12;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    animation: pulseCompleteBtn 1.5s infinite ease-in-out;
+}
+
+.complete-badge-btn:hover {
+    background: #fde047;
+}
+
+@keyframes pulseCompleteBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
