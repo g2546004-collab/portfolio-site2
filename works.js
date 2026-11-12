@@ -284,7 +284,7 @@ const RODS = [
     { id: "none", name: "ノーマル竿", speedFactor: 1.0, price: 0 },
     { id: "rod_s", name: "しなり竿・小", speedFactor: 0.95, price: 1000, desc: "魚のスピードが少しだけ遅くなる (5%減)" },
     { id: "rod_m", name: "しなり竿・中", speedFactor: 0.90, price: 3500, desc: "魚のスピードが少し遅くなる (10%減)" },
-    { id: "rod_l", name: "しなり竿・大", speedFactor: 0.85, price: 8000, desc: "魚のスピードがやや遅くなる (15%減)" }
+    { id: "rod_l", name: "しなり竿・大", speedFactor: 0.80, price: 8000, desc: "魚のスピードがやや遅くなる (15%減)" }
 ];
 
 const FLOATS = [
@@ -385,6 +385,28 @@ const showCompleteBtn = document.getElementById("show-complete-btn");
 if (showCompleteBtn) {
     showCompleteBtn.addEventListener("click", () => {
         completeModal.classList.add("active");
+    });
+}
+
+// 魚詳細モーダルの要素取得
+const fishDetailModal = document.getElementById("fish-detail-modal");
+const closeFishDetailBtn = document.getElementById("close-fish-detail-btn");
+const detailFishRarity = document.getElementById("detail-fish-rarity");
+const detailFishIllust = document.getElementById("detail-fish-illust");
+const detailFishName = document.getElementById("detail-fish-name");
+const detailFishDesc = document.getElementById("detail-fish-desc");
+const detailFishStats = document.getElementById("detail-fish-stats");
+
+if (closeFishDetailBtn) {
+    closeFishDetailBtn.addEventListener("click", () => {
+        fishDetailModal.classList.remove("active");
+    });
+}
+if (fishDetailModal) {
+    fishDetailModal.addEventListener("click", (e) => {
+        if (e.target === fishDetailModal) {
+            fishDetailModal.classList.remove("active");
+        }
     });
 }
 
@@ -750,6 +772,8 @@ function triggerHook() {
         const hitMax = zoneStart + zoneWidth;
 
         if (cursorPos >= hitMin && cursorPos <= hitMax) {
+            const wasAlreadyComplete = checkIsCompletedBefore(); // 釣る前のコンプリート状態を保持
+
             const isNew = !caughtData[currentFish.id];
             caughtData[currentFish.id] = (caughtData[currentFish.id] || 0) + 1;
             fishInventory[currentFish.id] = (fishInventory[currentFish.id] || 0) + 1;
@@ -763,7 +787,8 @@ function triggerHook() {
             const stars = "★".repeat(currentFish.rarity);
             finishTurn(`🎉 大成功！【${stars} ${currentFish.name}】を釣り上げた！（売却倉庫に追加）`);
 
-            checkCompletion();
+            // ★ 今回初めてコンプリートを達成した瞬間だけお祝いモーダルを出す
+            checkNewCompletion(wasAlreadyComplete);
         } else {
             finishTurn("💨 惜しい！タイミングが合わず糸を切られてしまった...");
         }
@@ -784,6 +809,11 @@ document.addEventListener("keydown", (e) => {
         if (completeModal.classList.contains("active")) {
             e.preventDefault();
             completeModal.classList.remove("active");
+            return;
+        }
+        if (fishDetailModal.classList.contains("active")) {
+            e.preventDefault();
+            fishDetailModal.classList.remove("active");
             return;
         }
         if (gameState === "idle" && !castBtn.disabled) {
@@ -815,24 +845,33 @@ if (closeModalBtn) {
     });
 }
 
-function checkCompletion() {
+function checkIsCompletedBefore() {
+    let count = 0;
+    FISH_LIST.forEach(fish => {
+        if ((caughtData[fish.id] || 0) > 0) count++;
+    });
+    return count >= FISH_LIST.length;
+}
+
+function checkNewCompletion(wasAlreadyComplete) {
     let unlockedCount = 0;
     FISH_LIST.forEach(fish => {
-        if (caughtData[fish.id] > 0) unlockedCount++;
+        if ((caughtData[fish.id] || 0) > 0) unlockedCount++;
     });
 
-    if (unlockedCount >= FISH_LIST.length) {
-        // コンプリートボタンを表示する
-        if (showCompleteBtn) {
-            showCompleteBtn.style.display = "inline-block";
-        }
+    const isNowComplete = unlockedCount >= FISH_LIST.length;
+
+    if (isNowComplete && showCompleteBtn) {
+        showCompleteBtn.style.display = "inline-block";
+    } else if (showCompleteBtn) {
+        showCompleteBtn.style.display = "none";
+    }
+
+    // 「直前は未コンプリートだったのに、今回の釣りで初めて全種埋まった」瞬間だけお祝いを出す
+    if (!wasAlreadyComplete && isNowComplete) {
         setTimeout(() => {
             completeModal.classList.add("active");
         }, 600);
-    } else {
-        if (showCompleteBtn) {
-            showCompleteBtn.style.display = "none";
-        }
     }
 }
 
@@ -867,13 +906,37 @@ function renderDex() {
             <div class="fish-name">${isUnlocked ? fish.name : "？？？"}</div>
             <div class="fish-count">${isUnlocked ? `釣った数: ${count}匹` : fish.desc}</div>
         `;
+
+        // ★ 釣ったことがある魚なら、クリックで詳細アップを表示
+        if (isUnlocked) {
+            card.style.cursor = "pointer";
+            card.addEventListener("click", () => {
+                showFishDetail(fish, count);
+            });
+        }
+
         dexGrid.appendChild(card);
     });
 
     if (dexCountEl) dexCountEl.textContent = unlockedCount;
 
-    // 図鑑描画時にコンプリート状態を毎回チェックしてボタンの表示を同期
-    checkCompletion();
+    // ボタンの表示状態を同期
+    if (unlockedCount >= FISH_LIST.length && showCompleteBtn) {
+        showCompleteBtn.style.display = "inline-block";
+    } else if (showCompleteBtn) {
+        showCompleteBtn.style.display = "none";
+    }
+}
+
+function showFishDetail(fish, count) {
+    const stars = "★".repeat(fish.rarity);
+    detailFishRarity.textContent = stars;
+    detailFishRarity.className = "catch-rarity rarity-" + fish.rarity;
+    detailFishIllust.innerHTML = getFishSVG(fish.id);
+    detailFishName.textContent = fish.name;
+    detailFishDesc.textContent = fish.desc;
+    detailFishStats.textContent = `通算釣獲数: ${count}匹 ／ 売値: ${fish.price.toLocaleString()}🪙`;
+    fishDetailModal.classList.add("active");
 }
 
 if (resetDexBtn) {
