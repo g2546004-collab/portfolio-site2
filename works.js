@@ -289,7 +289,6 @@ const FISH_LIST = [
     { id: "megalodon", name: "古代巨鮫メガロドン", rarity: 4, price: 10000, svg: getFishSVG("tuna", "#111827", "#374151"), zoneWidth: 5.0, speed: 3.8, erratic: true, desc: "【星4超伝説】ウキ大の波動に引き寄せられた古代の海王！" }
 ];
 
-// 釣り竿の弱体化調整（効果を控えめに変更：小5%減、中10%減、大15%減）
 const RODS = [
     { id: "none", name: "ノーマル竿", speedFactor: 1.0, price: 0 },
     { id: "rod_s", name: "しなり竿・小", speedFactor: 0.95, price: 1000, desc: "魚のスピードが少しだけ遅くなる (5%減)" },
@@ -310,7 +309,14 @@ let equippedRod = localStorage.getItem("natsumu_equipped_rod") || "none";
 let ownedFloats = JSON.parse(localStorage.getItem("natsumu_owned_floats")) || ["none"];
 let equippedFloat = localStorage.getItem("natsumu_equipped_float") || "none";
 let caughtData = JSON.parse(localStorage.getItem("natsumu_fishing_dex")) || {};
+
 let fishInventory = JSON.parse(localStorage.getItem("natsumu_fish_inventory")) || {};
+FISH_LIST.forEach(fish => {
+    if (caughtData[fish.id] && (!fishInventory[fish.id] || fishInventory[fish.id] === 0)) {
+        fishInventory[fish.id] = caughtData[fish.id];
+    }
+});
+localStorage.setItem("natsumu_fish_inventory", JSON.stringify(fishInventory));
 
 let gameState = "idle";
 let currentFish = null;
@@ -683,7 +689,6 @@ function animateCursor() {
 
     frameCounter++;
 
-    // 釣り竿の効果（小:5%減、中:10%減、大:15%減に弱体化）
     const rodObj = RODS.find(r => r.id === equippedRod) || RODS[0];
     let currentSpeed = currentFish.speed * rodObj.speedFactor;
 
@@ -723,8 +728,9 @@ function triggerHook() {
     if (gameState === "biting") {
         cancelAnimationFrame(animFrameId);
 
-        const hitMin = zoneStart - 1.5;
-        const hitMax = zoneStart + zoneWidth + 1.5;
+        // ★ 厳密な判定（ゾーンの中に完全に収まっているときのみ成功）
+        const hitMin = zoneStart;
+        const hitMax = zoneStart + zoneWidth;
 
         if (cursorPos >= hitMin && cursorPos <= hitMax) {
             const isNew = !caughtData[currentFish.id];
@@ -740,7 +746,8 @@ function triggerHook() {
             const stars = "★".repeat(currentFish.rarity);
             finishTurn(`🎉 大成功！【${stars} ${currentFish.name}】を釣り上げた！（売却倉庫に追加）`);
         } else {
-            finishTurn(`💨 惜しい！タイミングが合わず糸を切られた...（正体は「${currentFish.name}」だった！）`);
+            // ★ 失敗時に魚の正体を言わないシンプルなメッセージに変更
+            finishTurn("💨 惜しい！タイミングが合わず糸を切られてしまった...");
         }
     }
 }
