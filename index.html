@@ -90,8 +90,20 @@
             <section id="fishing">
                 <h3>Fishing Mini-Game</h3>
                 <p class="fishing-desc">
-                    タイミングよく「釣り上げる！」（または <strong>Spaceキー</strong>）を押して全15種の魚をコンプリートしよう。
+                    タイミングよく「釣り上げる！」（または <strong>Spaceキー</strong>）を押して全16種の魚をコンプリートしよう。
                 </p>
+
+                <!-- プレイヤー資産（所持金・装備ステータス） -->
+                <div class="player-wallet-card">
+                    <div class="wallet-left">
+                        <span class="wallet-label">所持コイン:</span>
+                        <span id="player-money" class="wallet-money">0 🪙</span>
+                    </div>
+                    <div class="equipped-info">
+                        <span>竿: <strong id="equipped-rod-name">ノーマル竿</strong></span>
+                        <span>ウキ: <strong id="equipped-float-name">ノーマルウキ</strong></span>
+                    </div>
+                </div>
 
                 <!-- 天気ステータスカード -->
                 <div class="weather-status-card" id="weather-status-card">
@@ -166,8 +178,33 @@
                     </div>
                 </div>
 
+                <!-- ショップ ＆ 魚売却エリア -->
+                <div class="shop-section">
+                    <h4>釣り具ショップ ＆ 魚売却</h4>
+                    <div class="shop-tabs">
+                        <button class="shop-tab-btn active" data-tab="rods">釣り竿 (スピード低下)</button>
+                        <button class="shop-tab-btn" data-tab="floats">ウキ (レア率UP & 星4)</button>
+                        <button class="shop-tab-btn" data-tab="sell">魚を売る</button>
+                    </div>
+                    <div class="shop-content">
+                        <!-- 竿タブ -->
+                        <div id="tab-rods" class="shop-pane active">
+                            <div class="shop-item-list" id="rod-shop-list"></div>
+                        </div>
+                        <!-- ウキタブ -->
+                        <div id="tab-floats" class="shop-pane">
+                            <div class="shop-item-list" id="float-shop-list"></div>
+                        </div>
+                        <!-- 売却タブ -->
+                        <div id="tab-sell" class="shop-pane">
+                            <p class="shop-pane-desc">釣った魚を売ってコインに換えよう！</p>
+                            <div class="sell-item-list" id="sell-item-list"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="fish-dex-header">
-                    <h4>釣果図鑑 (<span id="dex-count">0</span> / 15)</h4>
+                    <h4>釣果図鑑 (<span id="dex-count">0</span> / 16)</h4>
                     <button id="reset-dex-btn" class="reset-btn">記録リセット</button>
                 </div>
                 <div id="fish-dex-grid" class="fish-dex-grid"></div>

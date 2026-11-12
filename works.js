@@ -22,7 +22,6 @@ fetch("works.csv")
             return work.image && work.title;
         });
 
-        // CSVの作品とユーザーが投稿した作品を合体
         var works = customPhotos.concat(csvWorks);
 
         var grid = document.getElementById("works-grid");
@@ -35,7 +34,6 @@ fetch("works.csv")
         var modalDesc = document.getElementById("modal-desc");
         var modalClose = document.getElementById("modal-close");
 
-        // フォーム要素
         var uploadForm = document.getElementById("photo-upload-form");
         var uploadFile = document.getElementById("upload-file");
         var uploadTitle = document.getElementById("upload-title");
@@ -44,7 +42,6 @@ fetch("works.csv")
         var uploadYear = document.getElementById("upload-year");
 
         function updateCategories() {
-            // 既存のカテゴリ選択肢をいったんクリア（最初の2つ以外）
             while (categorySelect.options.length > 2) {
                 categorySelect.remove(2);
             }
@@ -144,7 +141,6 @@ fetch("works.csv")
         categorySelect.addEventListener("change", displayWorks);
         sortSelect.addEventListener("change", displayWorks);
 
-        // 写真投稿フォームの送信処理
         uploadForm.addEventListener("submit", function(e) {
             e.preventDefault();
             var file = uploadFile.files[0];
@@ -161,12 +157,10 @@ fetch("works.csv")
                     link: "#"
                 };
 
-                // 配列の先頭に追加してLocalStorageに保存
                 customPhotos.unshift(newPhoto);
                 works.unshift(newPhoto);
                 localStorage.setItem("natsumu_custom_photos", JSON.stringify(customPhotos));
 
-                // フォームをリセットして再描画
                 uploadForm.reset();
                 uploadYear.value = "2026";
                 updateCategories();
@@ -185,6 +179,7 @@ fetch("works.csv")
             }
         });
     });
+
 // --- 2. 天気予報API取得 & 釣りゲーム連動 ---
 var latitude = 35.6895;
 var longitude = 139.6917;
@@ -223,8 +218,7 @@ function showWeather(code) {
     checkWeatherBonus();
 }
 
-
-// --- 3. 釣りミニゲームのロジック（全15種・魚種別挙動） ---
+// --- 3. 釣りミニゲーム・ショップ・経済システム ---
 function getFishSVG(type, colorMain, colorSub) {
     if (type === "squid") {
         return `<svg width="64" height="40" viewBox="0 0 80 50">
@@ -272,25 +266,51 @@ function getFishSVG(type, colorMain, colorSub) {
     }
 }
 
+// 魚データ（全16種）
 const FISH_LIST = [
-    { id: "aji", name: "マアジ", rarity: 1, svg: getFishSVG("normal", "#7ea8be", "#a8dadc"), zoneWidth: 28, speed: 1.1, erratic: false, desc: "防波堤の定番。まずはここから。" },
-    { id: "iwashi", name: "マイワシ", rarity: 1, svg: getFishSVG("normal", "#90e0ef", "#caf0f8"), zoneWidth: 26, speed: 1.2, erratic: false, desc: "群れで泳ぐ銀色の小魚。" },
-    { id: "saba", name: "マサバ", rarity: 1, svg: getFishSVG("normal", "#3d5a80", "#98c1d9"), zoneWidth: 24, speed: 1.35, erratic: false, desc: "引きが強く釣りごたえがある。" },
-    { id: "kasago", name: "カサゴ", rarity: 1, svg: getFishSVG("normal", "#bc4749", "#f28482"), zoneWidth: 24, speed: 1.3, erratic: false, desc: "岩陰に潜む根魚の代表格。" },
-    { id: "kisu", name: "シロギス", rarity: 1, svg: getFishSVG("normal", "#f8edeb", "#fcd5ce"), zoneWidth: 22, speed: 1.45, erratic: false, desc: "砂浜の女王と呼ばれる美しい魚。" },
-    { id: "kumanomi", name: "クマノミ", rarity: 1, svg: getFishSVG("normal", "#ff7b00", "#ffffff"), zoneWidth: 25, speed: 1.25, erratic: false, desc: "南国の海からやってきた鮮やかなオレンジの小魚。" },
-    { id: "tatsunootoshigo", name: "タツノオトシゴ", rarity: 1, svg: getFishSVG("seahorse", "#52b788", "#d8f3dc"), zoneWidth: 27, speed: 1.0, erratic: false, desc: "ゆったりと漂う、ユニークな姿の小型魚。" },
+    { id: "aji", name: "マアジ", rarity: 1, price: 100, svg: getFishSVG("normal", "#7ea8be", "#a8dadc"), zoneWidth: 28, speed: 1.1, erratic: false, desc: "防波堤の定番。まずはここから。" },
+    { id: "iwashi", name: "マイワシ", rarity: 1, price: 80, svg: getFishSVG("normal", "#90e0ef", "#caf0f8"), zoneWidth: 26, speed: 1.2, erratic: false, desc: "群れで泳ぐ銀色の小魚。" },
+    { id: "saba", name: "マサバ", rarity: 1, price: 150, svg: getFishSVG("normal", "#3d5a80", "#98c1d9"), zoneWidth: 24, speed: 1.35, erratic: false, desc: "引きが強く釣りごたえがある。" },
+    { id: "kasago", name: "カサゴ", rarity: 1, price: 140, svg: getFishSVG("normal", "#bc4749", "#f28482"), zoneWidth: 24, speed: 1.3, erratic: false, desc: "岩陰に潜む根魚の代表格。" },
+    { id: "kisu", name: "シロギス", rarity: 1, price: 160, svg: getFishSVG("normal", "#f8edeb", "#fcd5ce"), zoneWidth: 22, speed: 1.45, erratic: false, desc: "砂浜の女王と呼ばれる美しい魚。" },
+    { id: "kumanomi", name: "クマノミ", rarity: 1, price: 200, svg: getFishSVG("normal", "#ff7b00", "#ffffff"), zoneWidth: 25, speed: 1.25, erratic: false, desc: "南国の海からやってきた鮮やかなオレンジの小魚。" },
+    { id: "tatsunootoshigo", name: "タツノオトシゴ", rarity: 1, price: 250, svg: getFishSVG("seahorse", "#52b788", "#d8f3dc"), zoneWidth: 27, speed: 1.0, erratic: false, desc: "ゆったりと漂う、ユニークな姿の小型魚。" },
 
-    { id: "madai", name: "マダイ", rarity: 2, svg: getFishSVG("normal", "#ff758f", "#ffb3c1"), zoneWidth: 14, speed: 2.1, erratic: false, desc: "魚の王様。力強い引きに注意！" },
-    { id: "hirame", name: "ヒラメ", rarity: 2, svg: getFishSVG("flat", "#b08968", "#ddb892"), zoneWidth: 13, speed: 2.3, erratic: false, desc: "海底に潜む高級フラットフィッシュ。" },
-    { id: "aoriika", name: "アオリイカ", rarity: 2, svg: getFishSVG("squid", "#f4a261", "#e76f51"), zoneWidth: 12, speed: 2.5, erratic: false, desc: "イカの王様。独特のジェット噴射。" },
-    { id: "katsuo", name: "カツオ", rarity: 2, svg: getFishSVG("tuna", "#2b2d42", "#8d99ae"), zoneWidth: 12.5, speed: 2.4, erratic: false, desc: "勢いよく泳ぐ、一本釣りの名優。" },
-    { id: "kanpachi", name: "カンパチ", rarity: 2, svg: getFishSVG("normal", "#e9c46a", "#f4a261"), zoneWidth: 11, speed: 2.6, erratic: false, desc: "力強い引きを誇る大型回遊魚。" },
+    { id: "madai", name: "マダイ", rarity: 2, price: 600, svg: getFishSVG("normal", "#ff758f", "#ffb3c1"), zoneWidth: 14, speed: 2.1, erratic: false, desc: "魚の王様。力強い引きに注意！" },
+    { id: "hirame", name: "ヒラメ", rarity: 2, price: 750, svg: getFishSVG("flat", "#b08968", "#ddb892"), zoneWidth: 13, speed: 2.3, erratic: false, desc: "海底に潜む高級フラットフィッシュ。" },
+    { id: "aoriika", name: "アオリイカ", rarity: 2, price: 700, svg: getFishSVG("squid", "#f4a261", "#e76f51"), zoneWidth: 12, speed: 2.5, erratic: false, desc: "イカの王様。独特のジェット噴射。" },
+    { id: "katsuo", name: "カツオ", rarity: 2, price: 800, svg: getFishSVG("tuna", "#2b2d42", "#8d99ae"), zoneWidth: 12.5, speed: 2.4, erratic: false, desc: "勢いよく泳ぐ、一本釣りの名優。" },
+    { id: "kanpachi", name: "カンパチ", rarity: 2, price: 950, svg: getFishSVG("normal", "#e9c46a", "#f4a261"), zoneWidth: 11, speed: 2.6, erratic: false, desc: "力強い引きを誇る大型回遊魚。" },
 
-    { id: "golden_salmon", name: "黄金のサーモン", rarity: 3, svg: getFishSVG("salmon", "#ffd700", "#ff4500"), zoneWidth: 7.0, speed: 3.2, erratic: true, desc: "【激ムズ】全身が黄金色に輝く、超低確率の幻のサケ！" },
-    { id: "kuromaguro", name: "クロマグロ", rarity: 3, svg: getFishSVG("tuna", "#1d3557", "#457b9d"), zoneWidth: 6.0, speed: 3.5, erratic: true, desc: "【激ムズ】海の黒いダイヤ。超高速＆緩急をつけて暴れる！" },
-    { id: "ryugu", name: "リュウグウノツカイ", rarity: 3, svg: getFishSVG("oarfish", "#e2e8f0", "#e63946"), zoneWidth: 5.0, speed: 3.9, erratic: true, desc: "【激ムズ】深海の神秘。極小ゾーンと変則スピードを制せ！" }
+    { id: "golden_salmon", name: "黄金のサーモン", rarity: 3, price: 2500, svg: getFishSVG("salmon", "#ffd700", "#ff4500"), zoneWidth: 7.0, speed: 3.2, erratic: true, desc: "【激ムズ】全身が黄金色に輝く、超低確率の幻のサケ！" },
+    { id: "kuromaguro", name: "クロマグロ", rarity: 3, price: 3000, svg: getFishSVG("tuna", "#1d3557", "#457b9d"), zoneWidth: 6.0, speed: 3.5, erratic: true, desc: "【激ムズ】海の黒いダイヤ。超高速＆緩急をつけて暴れる！" },
+    { id: "ryugu", name: "リュウグウノツカイ", rarity: 3, price: 4000, svg: getFishSVG("oarfish", "#e2e8f0", "#e63946"), zoneWidth: 5.0, speed: 3.9, erratic: true, desc: "【激ムズ】深海の神秘。極小ゾーンと変則スピードを制せ！" },
+
+    { id: "megalodon", name: "古代巨鮫メガロドン", rarity: 4, price: 10000, svg: getFishSVG("tuna", "#111827", "#374151"), zoneWidth: 5.0, speed: 3.8, erratic: true, desc: "【星4超伝説】ウキ大の波動に引き寄せられた古代の海王！" }
 ];
+
+// 釣り竿の弱体化調整（効果を控えめに変更：小5%減、中10%減、大15%減）
+const RODS = [
+    { id: "none", name: "ノーマル竿", speedFactor: 1.0, price: 0 },
+    { id: "rod_s", name: "しなり竿・小", speedFactor: 0.95, price: 1000, desc: "魚のスピードが少しだけ遅くなる (5%減)" },
+    { id: "rod_m", name: "しなり竿・中", speedFactor: 0.90, price: 3500, desc: "魚のスピードが少し遅くなる (10%減)" },
+    { id: "rod_l", name: "しなり竿・大", speedFactor: 0.85, price: 8000, desc: "魚のスピードがやや遅くなる (15%減)" }
+];
+
+const FLOATS = [
+    { id: "none", name: "ノーマルウキ", rarityBonus: 0, price: 0 },
+    { id: "float_s", name: "名人のウキ・小", rarityBonus: 1, price: 1500, desc: "レア度2以上の魚が釣りやすくなる" },
+    { id: "float_m", name: "名人のウキ・中", rarityBonus: 2, price: 5000, desc: "レア度3の出現率がアップする" },
+    { id: "float_l", name: "伝説のウキ・大", rarityBonus: 3, price: 12000, desc: "星4の魚（約5%）やレア魚が続出する最強のウキ！" }
+];
+
+let playerMoney = Number(localStorage.getItem("natsumu_money")) || 0;
+let ownedRods = JSON.parse(localStorage.getItem("natsumu_owned_rods")) || ["none"];
+let equippedRod = localStorage.getItem("natsumu_equipped_rod") || "none";
+let ownedFloats = JSON.parse(localStorage.getItem("natsumu_owned_floats")) || ["none"];
+let equippedFloat = localStorage.getItem("natsumu_equipped_float") || "none";
+let caughtData = JSON.parse(localStorage.getItem("natsumu_fishing_dex")) || {};
+let fishInventory = JSON.parse(localStorage.getItem("natsumu_fish_inventory")) || {};
 
 let gameState = "idle";
 let currentFish = null;
@@ -303,8 +323,6 @@ let zoneWidth = 20;
 let frameCounter = 0;
 let isRainyBonus = false;
 let fishMotionType = "normal";
-
-let caughtData = JSON.parse(localStorage.getItem("natsumu_fishing_dex")) || {};
 
 const fishingBoard = document.getElementById("fishing-board");
 const castBtn = document.getElementById("cast-btn");
@@ -320,6 +338,14 @@ const cursorEl = document.getElementById("cursor");
 const dexGrid = document.getElementById("fish-dex-grid");
 const dexCountEl = document.getElementById("dex-count");
 const resetDexBtn = document.getElementById("reset-dex-btn");
+
+const playerMoneyEl = document.getElementById("player-money");
+const equippedRodNameEl = document.getElementById("equipped-rod-name");
+const equippedFloatNameEl = document.getElementById("equipped-float-name");
+
+const rodShopList = document.getElementById("rod-shop-list");
+const floatShopList = document.getElementById("float-shop-list");
+const sellItemList = document.getElementById("sell-item-list");
 
 const weatherStatusCard = document.getElementById("weather-status-card");
 const weatherBadgeIcon = document.getElementById("weather-badge-icon");
@@ -338,7 +364,168 @@ const catchName = document.getElementById("catch-name");
 const catchDesc = document.getElementById("catch-desc");
 const closeModalBtn = document.getElementById("close-modal-btn");
 
+updateWalletUI();
+renderShop();
+renderSellList();
 renderDex();
+
+document.querySelectorAll(".shop-tab-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        document.querySelectorAll(".shop-tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".shop-pane").forEach(p => p.classList.remove("active"));
+        e.target.classList.add("active");
+        const tabName = e.target.getAttribute("data-tab");
+        document.getElementById("tab-" + tabName).classList.add("active");
+    });
+});
+
+function updateWalletUI() {
+    if (playerMoneyEl) playerMoneyEl.textContent = playerMoney.toLocaleString() + " 🪙";
+    const rodObj = RODS.find(r => r.id === equippedRod) || RODS[0];
+    const floatObj = FLOATS.find(f => f.id === equippedFloat) || FLOATS[0];
+    if (equippedRodNameEl) equippedRodNameEl.textContent = rodObj.name;
+    if (equippedFloatNameEl) equippedFloatNameEl.textContent = floatObj.name;
+    localStorage.setItem("natsumu_money", playerMoney);
+    localStorage.setItem("natsumu_equipped_rod", equippedRod);
+    localStorage.setItem("natsumu_equipped_float", equippedFloat);
+}
+
+function renderShop() {
+    if (rodShopList) {
+        rodShopList.innerHTML = "";
+        RODS.forEach(rod => {
+            const isOwned = ownedRods.includes(rod.id);
+            const isEquipped = (equippedRod === rod.id);
+            const row = document.createElement("div");
+            row.className = "shop-item-row";
+            row.innerHTML = `
+                <div class="shop-item-info">
+                    <strong>${rod.name}</strong>
+                    <span>${rod.desc} / 価格: ${rod.price.toLocaleString()} 🪙</span>
+                </div>
+                <div>
+                    ${isEquipped ? '<button class="shop-btn" disabled>装備中</button>' :
+                      isOwned ? `<button class="shop-btn" onclick="equipRod('${rod.id}')">装備する</button>` :
+                      `<button class="shop-btn" onclick="buyRod('${rod.id}', ${rod.price})">購入する</button>`}
+                </div>
+            `;
+            rodShopList.appendChild(row);
+        });
+    }
+
+    if (floatShopList) {
+        floatShopList.innerHTML = "";
+        FLOATS.forEach(fl => {
+            const isOwned = ownedFloats.includes(fl.id);
+            const isEquipped = (equippedFloat === fl.id);
+            const row = document.createElement("div");
+            row.className = "shop-item-row";
+            row.innerHTML = `
+                <div class="shop-item-info">
+                    <strong>${fl.name}</strong>
+                    <span>${fl.desc} / 価格: ${fl.price.toLocaleString()} 🪙</span>
+                </div>
+                <div>
+                    ${isEquipped ? '<button class="shop-btn" disabled>装備中</button>' :
+                      isOwned ? `<button class="shop-btn" onclick="equipFloat('${fl.id}')">装備する</button>` :
+                      `<button class="shop-btn" onclick="buyFloat('${fl.id}', ${fl.price})">購入する</button>`}
+                </div>
+            `;
+            floatShopList.appendChild(row);
+        });
+    }
+}
+
+window.buyRod = function(id, price) {
+    if (playerMoney < price) {
+        alert("コインが足りません！");
+        return;
+    }
+    playerMoney -= price;
+    ownedRods.push(id);
+    equippedRod = id;
+    localStorage.setItem("natsumu_owned_rods", JSON.stringify(ownedRods));
+    updateWalletUI();
+    renderShop();
+    alert("「" + RODS.find(r => r.id === id).name + "」を購入＆装備しました！");
+};
+
+window.equipRod = function(id) {
+    equippedRod = id;
+    updateWalletUI();
+    renderShop();
+};
+
+window.buyFloat = function(id, price) {
+    if (playerMoney < price) {
+        alert("コインが足りません！");
+        return;
+    }
+    playerMoney -= price;
+    ownedFloats.push(id);
+    equippedFloat = id;
+    localStorage.setItem("natsumu_owned_floats", JSON.stringify(ownedFloats));
+    updateWalletUI();
+    renderShop();
+    alert("「" + FLOATS.find(f => f.id === id).name + "」を購入＆装備しました！");
+};
+
+window.equipFloat = function(id) {
+    equippedFloat = id;
+    updateWalletUI();
+    renderShop();
+};
+
+function renderSellList() {
+    if (!sellItemList) return;
+    sellItemList.innerHTML = "";
+    let hasStock = false;
+
+    FISH_LIST.forEach(fish => {
+        const count = fishInventory[fish.id] || 0;
+        if (count > 0) {
+            hasStock = true;
+            const row = document.createElement("div");
+            row.className = "sell-item-row";
+            const stars = "★".repeat(fish.rarity);
+            row.innerHTML = `
+                <div class="shop-item-info">
+                    <strong>${stars} ${fish.name} (所持: ${count}匹)</strong>
+                    <span>売値: 1匹 ${fish.price.toLocaleString()} 🪙</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button class="shop-btn" onclick="sellFish('${fish.id}', 1)">1匹売る</button>
+                    <button class="shop-btn" onclick="sellFish('${fish.id}', ${count})">全部売る</button>
+                </div>
+            `;
+            sellItemList.appendChild(row);
+        }
+    });
+
+    if (!hasStock) {
+        sellItemList.innerHTML = '<p style="color:#666; font-size:12px; text-align:center; padding:15px;">売却できる魚がいません。釣りをしてみよう！</p>';
+    }
+}
+
+window.sellFish = function(fishId, amount) {
+    const stock = fishInventory[fishId] || 0;
+    const sellCount = Math.min(amount, stock);
+    if (sellCount <= 0) return;
+
+    const fishObj = FISH_LIST.find(f => f.id === fishId);
+    const earn = fishObj.price * sellCount;
+
+    fishInventory[fishId] -= sellCount;
+    if (fishInventory[fishId] <= 0) {
+        delete fishInventory[fishId];
+    }
+    playerMoney += earn;
+
+    localStorage.setItem("natsumu_fish_inventory", JSON.stringify(fishInventory));
+    updateWalletUI();
+    renderSellList();
+    alert(`${fishObj.name} を ${sellCount}匹売却し、${earn.toLocaleString()} 🪙 を獲得しました！`);
+};
 
 function createRainEffect() {
     if (!rainLayer) return;
@@ -358,7 +545,7 @@ function checkWeatherBonus() {
         isRainyBonus = true;
         weatherBadgeIcon.textContent = "☔";
         weatherTitle.textContent = "現在の天気：雨（レア魚ラッシュ発動中！）";
-        weatherBonusText.textContent = "雨の恵みで魚の警戒心が薄れ、レア度2・3の出現率が大幅アップ中！";
+        weatherBonusText.textContent = "雨の恵みで魚の警戒心が薄れ、レア度アップ中！";
         if (weatherStatusCard) weatherStatusCard.style.background = "#eaf2f8";
         if (fishingPond) fishingPond.className = "fishing-pond bg-rainy";
         if (skyDecor) skyDecor.textContent = "🌧️";
@@ -375,7 +562,7 @@ function checkWeatherBonus() {
         isRainyBonus = false;
         weatherBadgeIcon.textContent = "☁️";
         weatherTitle.textContent = "現在の天気：曇り（まずまずのコンディション）";
-        weatherBonusText.textContent = "曇天によるローライト効果で、魚たちの活性が程よく上がっています。";
+        weatherBonusText.textContent = "曇天によるローライト効果で、魚たちの活性が上がっています。";
         if (weatherStatusCard) weatherStatusCard.style.background = "#f4f5f7";
         if (fishingPond) fishingPond.className = "fishing-pond bg-cloudy";
         if (skyDecor) skyDecor.textContent = "☁️";
@@ -386,17 +573,38 @@ function pickRandomFish() {
     const rand = Math.random() * 100;
     let selectedRarity = 1;
 
-    if (isRainyBonus) {
-        if (rand < 18) selectedRarity = 3;
-        else if (rand < 55) selectedRarity = 2;
-        else selectedRarity = 1;
+    const hasFloatL = (equippedFloat === "float_l");
+    const hasFloat = (equippedFloat !== "none");
+
+    if (hasFloatL && rand < 5.0) {
+        selectedRarity = 4;
     } else {
-        if (rand < 10) selectedRarity = 3;
-        else if (rand < 40) selectedRarity = 2;
-        else selectedRarity = 1;
+        let r3Chance = 10;
+        let r2Chance = 30;
+
+        if (equippedFloat === "float_s") { r2Chance = 45; r3Chance = 15; }
+        else if (equippedFloat === "float_m") { r2Chance = 40; r3Chance = 25; }
+        else if (equippedFloat === "float_l") { r2Chance = 35; r3Chance = 35; }
+
+        if (isRainyBonus) {
+            r3Chance += 8;
+            r2Chance += 15;
+        }
+
+        const rand2 = Math.random() * 100;
+        if (rand2 < r3Chance && hasFloat) {
+            selectedRarity = 3;
+        } else if (rand2 < (r3Chance + r2Chance)) {
+            selectedRarity = 2;
+        } else {
+            selectedRarity = 1;
+        }
     }
 
     const candidates = FISH_LIST.filter(f => f.rarity === selectedRarity);
+    if (candidates.length === 0) {
+        return FISH_LIST.filter(f => f.rarity === 1)[0];
+    }
     return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
@@ -461,7 +669,7 @@ function startBitePhase() {
         fishMotionType = "fuwa-fuwa";
     } else if (currentFish.erratic) {
         fishMotionType = "erratic";
-    } else if (currentFish.rarity === 2) {
+    } else if (currentFish.rarity >= 2) {
         fishMotionType = "heavy";
     } else {
         fishMotionType = "normal";
@@ -474,21 +682,24 @@ function animateCursor() {
     if (gameState !== "biting") return;
 
     frameCounter++;
-    let currentSpeed = currentFish.speed;
+
+    // 釣り竿の効果（小:5%減、中:10%減、大:15%減に弱体化）
+    const rodObj = RODS.find(r => r.id === equippedRod) || RODS[0];
+    let currentSpeed = currentFish.speed * rodObj.speedFactor;
 
     if (fishMotionType === "fuwa-fuwa") {
         const waveEffect = Math.sin(frameCounter * 0.15) * 1.2;
-        currentSpeed = Math.max(0.4, currentFish.speed + waveEffect);
+        currentSpeed = Math.max(0.3, currentSpeed + waveEffect * rodObj.speedFactor);
     } 
     else if (fishMotionType === "erratic") {
         const erraticWave = Math.sin(frameCounter * 0.2) * 2.2;
-        currentSpeed = currentFish.speed + erraticWave;
+        currentSpeed = currentSpeed + erraticWave * rodObj.speedFactor;
     }
     else if (fishMotionType === "heavy") {
-        currentSpeed = currentFish.speed * (1 + Math.sin(frameCounter * 0.05) * 0.3);
+        currentSpeed = currentSpeed * (1 + Math.sin(frameCounter * 0.05) * 0.3);
     }
 
-    cursorPos += currentSpeed * cursorDir;
+    cursorPos += Math.max(0.2, currentSpeed) * cursorDir;
 
     if (cursorPos >= 100) {
         cursorPos = 100;
@@ -518,12 +729,16 @@ function triggerHook() {
         if (cursorPos >= hitMin && cursorPos <= hitMax) {
             const isNew = !caughtData[currentFish.id];
             caughtData[currentFish.id] = (caughtData[currentFish.id] || 0) + 1;
+            fishInventory[currentFish.id] = (fishInventory[currentFish.id] || 0) + 1;
+
             localStorage.setItem("natsumu_fishing_dex", JSON.stringify(caughtData));
+            localStorage.setItem("natsumu_fish_inventory", JSON.stringify(fishInventory));
             renderDex();
+            renderSellList();
 
             showCatchModal(currentFish, isNew);
             const stars = "★".repeat(currentFish.rarity);
-            finishTurn(`🎉 大成功！【${stars} ${currentFish.name}】を釣り上げた！`);
+            finishTurn(`🎉 大成功！【${stars} ${currentFish.name}】を釣り上げた！（売却倉庫に追加）`);
         } else {
             finishTurn(`💨 惜しい！タイミングが合わず糸を切られた...（正体は「${currentFish.name}」だった！）`);
         }
@@ -557,7 +772,7 @@ function showCatchModal(fish, isNew) {
     catchRarity.className = "catch-rarity rarity-" + fish.rarity;
     catchIllust.innerHTML = fish.svg;
     catchName.textContent = fish.name;
-    catchDesc.textContent = fish.desc;
+    catchDesc.textContent = fish.desc + ` (売値: ${fish.price.toLocaleString()}🪙)`;
 
     catchBadge.textContent = isNew ? "NEW DISCOVERY!" : `通算 ${caughtData[fish.id]}匹目`;
     catchCard.className = "catch-card rare-glow-" + fish.rarity;
@@ -611,9 +826,16 @@ if (resetDexBtn) {
     resetDexBtn.addEventListener("click", () => {
         if (confirm("釣果図鑑の記録をすべてリセットしますか？")) {
             caughtData = {};
+            fishInventory = {};
+            playerMoney = 0;
             localStorage.removeItem("natsumu_fishing_dex");
+            localStorage.removeItem("natsumu_fish_inventory");
+            localStorage.removeItem("natsumu_money");
+            updateWalletUI();
+            renderShop();
+            renderSellList();
             renderDex();
-            statusText.textContent = "図鑑データをリセットしました。";
+            statusText.textContent = "図鑑および経済データをリセットしました。";
         }
     });
 }

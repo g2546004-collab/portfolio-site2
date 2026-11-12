@@ -105,7 +105,6 @@ footer {
     margin-top: 10px;
 }
 
-/* スマートフォン対応 */
 @media screen and (max-width: 600px) {
     #top {
         padding-top: 80px;
@@ -121,30 +120,45 @@ footer {
     }
 }
 
-/* 天気アイコン */
 #weather-icon {
     font-size: 60px;
     margin: 10px 0 0 0;
 }
 
-/* 天気連動背景色 */
-body.weather-sunny {
-    background-color: #e8ddc9;
-}
+body.weather-sunny { background-color: #e8ddc9; }
+body.weather-cloudy { background-color: #dfe3e8; }
+body.weather-rainy { background-color: #cbd9e5; }
 
-body.weather-cloudy {
-    background-color: #dfe3e8;
-}
-
-body.weather-rainy {
-    background-color: #cbd9e5;
-}
-
-/* ================= 釣りミニゲーム ＆ グラフィック強化 ================= */
 .fishing-desc {
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 15px;
+}
+
+/* プレイヤーウォレットカード */
+.player-wallet-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #000000;
+    background: #fffdf5;
+    padding: 10px 18px;
+    margin-bottom: 15px;
+    max-width: 600px;
+    font-size: 13px;
+}
+
+.wallet-money {
+    font-size: 16px;
+    font-weight: bold;
+    color: #d97706;
+    margin-left: 5px;
+}
+
+.equipped-info {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
 }
 
 .weather-status-card {
@@ -159,27 +173,16 @@ body.weather-rainy {
     transition: background-color 0.5s;
 }
 
-.weather-badge-icon {
-    font-size: 32px;
-}
-
-.weather-info-text {
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.weather-info-text strong {
-    font-size: 14px;
-    display: block;
-    margin-bottom: 2px;
-}
+.weather-badge-icon { font-size: 32px; }
+.weather-info-text { font-size: 13px; line-height: 1.5; }
+.weather-info-text strong { font-size: 14px; display: block; margin-bottom: 2px; }
 
 .fishing-board {
     border: 1px solid #000000;
     background: #ffffff;
     padding: 25px;
     max-width: 600px;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
 }
 
 .fishing-board.shake {
@@ -203,17 +206,9 @@ body.weather-rainy {
     user-select: none;
 }
 
-.fishing-pond.bg-sunny {
-    background: linear-gradient(180deg, #fffdf9 0%, #f7ebd2 100%);
-}
-
-.fishing-pond.bg-cloudy {
-    background: linear-gradient(180deg, #f2f4f7 0%, #dce1e7 100%);
-}
-
-.fishing-pond.bg-rainy {
-    background: linear-gradient(180deg, #dde6ef 0%, #b5c6d6 100%);
-}
+.fishing-pond.bg-sunny { background: linear-gradient(180deg, #fffdf9 0%, #f7ebd2 100%); }
+.fishing-pond.bg-cloudy { background: linear-gradient(180deg, #f2f4f7 0%, #dce1e7 100%); }
+.fishing-pond.bg-rainy { background: linear-gradient(180deg, #dde6ef 0%, #b5c6d6 100%); }
 
 .sky-decor {
     position: absolute;
@@ -300,9 +295,7 @@ body.weather-rainy {
     pointer-events: none;
 }
 
-.water-ripples.active {
-    animation: rippleExpand 1.2s infinite ease-out;
-}
+.water-ripples.active { animation: rippleExpand 1.2s infinite ease-out; }
 
 @keyframes rippleExpand {
     0% { width: 14px; height: 5px; opacity: 0.9; }
@@ -354,11 +347,7 @@ body.weather-rainy {
     animation: waveMove 6s linear infinite;
 }
 
-.wave2 {
-    top: -3px;
-    opacity: 0.5;
-    animation: waveMove 9s linear infinite reverse;
-}
+.wave2 { top: -3px; opacity: 0.5; animation: waveMove 9s linear infinite reverse; }
 
 @keyframes waveMove {
     0% { transform: translateX(0); }
@@ -382,27 +371,9 @@ body.weather-rainy {
     border-bottom: 4px solid transparent;
 }
 
-.shadow-1 {
-    width: 28px;
-    height: 10px;
-    top: 25px;
-    animation: swimRight 11s infinite linear;
-}
-
-.shadow-2 {
-    width: 36px;
-    height: 13px;
-    top: 55px;
-    animation: swimLeft 15s infinite linear;
-}
-
-.shadow-big {
-    width: 65px;
-    height: 20px;
-    top: 78px;
-    background: rgba(15, 35, 55, 0.18);
-    animation: swimRight 22s infinite linear;
-}
+.shadow-1 { width: 28px; height: 10px; top: 25px; animation: swimRight 11s infinite linear; }
+.shadow-2 { width: 36px; height: 13px; top: 55px; animation: swimLeft 15s infinite linear; }
+.shadow-big { width: 65px; height: 20px; top: 78px; background: rgba(15, 35, 55, 0.18); animation: swimRight 22s infinite linear; }
 
 @keyframes swimRight {
     0% { left: -80px; transform: scaleX(1); }
@@ -428,10 +399,7 @@ body.weather-rainy {
     transition: opacity 0.25s;
 }
 
-.catch-modal.active {
-    opacity: 1;
-    pointer-events: auto;
-}
+.catch-modal.active { opacity: 1; pointer-events: auto; }
 
 .catch-card {
     text-align: center;
@@ -445,20 +413,11 @@ body.weather-rainy {
     transition: transform 0.25s;
 }
 
-.catch-modal.active .catch-card {
-    transform: translateY(0);
-}
+.catch-modal.active .catch-card { transform: translateY(0); }
 
-.catch-card.rare-glow-2 {
-    border-color: #d97706;
-    box-shadow: 4px 4px 0px #d97706;
-}
-
-.catch-card.rare-glow-3 {
-    border-color: #db2777;
-    box-shadow: 4px 4px 0px #db2777;
-    background: linear-gradient(135deg, #fff 0%, #fff0f6 100%);
-}
+.catch-card.rare-glow-2 { border-color: #d97706; box-shadow: 4px 4px 0px #d97706; }
+.catch-card.rare-glow-3 { border-color: #db2777; box-shadow: 4px 4px 0px #db2777; background: linear-gradient(135deg, #fff 0%, #fff0f6 100%); }
+.catch-card.rare-glow-4 { border-color: #7c3aed; box-shadow: 4px 4px 0px #7c3aed; background: linear-gradient(135deg, #fff 0%, #f3e8ff 100%); }
 
 .catch-badge {
     display: inline-block;
@@ -470,36 +429,11 @@ body.weather-rainy {
     margin-bottom: 2px;
 }
 
-.catch-rarity {
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.catch-illust {
-    margin: 4px auto;
-    height: 54px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.catch-name {
-    margin: 2px 0 4px;
-    font-size: 18px;
-}
-
-.catch-desc {
-    margin: 0 0 10px;
-    font-size: 11px;
-    color: #444;
-    line-height: 1.4;
-}
-
-.catch-card .game-btn {
-    padding: 6px 18px;
-    font-size: 12px;
-}
+.catch-rarity { font-size: 14px; font-weight: bold; letter-spacing: 2px; }
+.catch-illust { margin: 4px auto; height: 54px; display: flex; justify-content: center; align-items: center; }
+.catch-name { margin: 2px 0 4px; font-size: 18px; }
+.catch-desc { margin: 0 0 10px; font-size: 11px; color: #444; line-height: 1.4; }
+.catch-card .game-btn { padding: 6px 18px; font-size: 12px; }
 
 .fishing-status {
     margin: 16px 0;
@@ -516,9 +450,7 @@ body.weather-rainy {
     transition: opacity 0.2s;
 }
 
-.timing-gauge-container.active {
-    opacity: 1;
-}
+.timing-gauge-container.active { opacity: 1; }
 
 .timing-labels {
     display: flex;
@@ -533,13 +465,7 @@ body.weather-rainy {
     position: relative;
     width: 100%;
     height: 30px;
-    background: repeating-linear-gradient(
-        45deg,
-        #f5f5f5,
-        #f5f5f5 8px,
-        #ebebeb 8px,
-        #ebebeb 16px
-    );
+    background: repeating-linear-gradient(45deg, #f5f5f5, #f5f5f5 8px, #ebebeb 8px, #ebebeb 16px);
     border: 1px solid #000000;
 }
 
@@ -554,13 +480,9 @@ body.weather-rainy {
     width: 20%;
 }
 
-.target-zone.rare-2 {
-    background: #ef6c00;
-}
-
-.target-zone.rare-3 {
-    background: #c2185b;
-}
+.target-zone.rare-2 { background: #ef6c00; }
+.target-zone.rare-3 { background: #c2185b; }
+.target-zone.rare-4 { background: #7c3aed; }
 
 .cursor {
     position: absolute;
@@ -590,24 +512,80 @@ body.weather-rainy {
     transition: all 0.15s;
 }
 
-.game-btn:hover:not(:disabled) {
-    background: #000000;
-    color: #ffffff;
+.game-btn:hover:not(:disabled) { background: #000000; color: #ffffff; }
+.game-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.action-btn:not(:disabled) { background: #000000; color: #ffffff; }
+.action-btn:hover:not(:disabled) { background: #333333; }
+
+/* ショップセクションのスタイル */
+.shop-section {
+    border: 1px solid #000000;
+    background: #fbfbfb;
+    padding: 16px 20px;
+    max-width: 600px;
+    margin-bottom: 25px;
 }
 
-.game-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
+.shop-section h4 { margin: 0 0 12px 0; font-size: 15px; }
+
+.shop-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
 }
 
-.action-btn:not(:disabled) {
-    background: #000000;
-    color: #ffffff;
+.shop-tab-btn {
+    flex: 1;
+    padding: 8px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    background: #eaeaea;
+    border: 1px solid #000;
+    cursor: pointer;
 }
 
-.action-btn:hover:not(:disabled) {
-    background: #333333;
+.shop-tab-btn.active {
+    background: #000;
+    color: #fff;
 }
+
+.shop-pane { display: none; }
+.shop-pane.active { display: block; }
+
+.shop-pane-desc { font-size: 12px; color: #555; margin: 0 0 10px 0; }
+
+.shop-item-list, .sell-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.shop-item-row, .sell-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.shop-item-info strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.shop-item-info span { color: #666; font-size: 11px; }
+
+.shop-btn {
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    background: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.shop-btn:hover:not(:disabled) { background: #000; color: #fff; }
+.shop-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #e5e5e5; }
 
 .fish-dex-header {
     display: flex;
@@ -617,9 +595,7 @@ body.weather-rainy {
     max-width: 600px;
 }
 
-.fish-dex-header h4 {
-    margin: 0;
-}
+.fish-dex-header h4 { margin: 0; }
 
 .reset-btn {
     font-size: 11px;
@@ -645,15 +621,8 @@ body.weather-rainy {
     transition: transform 0.15s;
 }
 
-.fish-card:not(.locked):hover {
-    transform: translateY(-2px);
-}
-
-.fish-card.locked {
-    background: #f7f7f7;
-    color: #999999;
-    border-color: #cccccc;
-}
+.fish-card:not(.locked):hover { transform: translateY(-2px); }
+.fish-card.locked { background: #f7f7f7; color: #999999; border-color: #cccccc; }
 
 .fish-svg-box {
     height: 44px;
@@ -663,70 +632,30 @@ body.weather-rainy {
     margin: 4px 0;
 }
 
-.fish-card.locked .fish-svg-box svg {
-    filter: brightness(0) opacity(0.18);
-}
+.fish-card.locked .fish-svg-box svg { filter: brightness(0) opacity(0.18); }
 
-.fish-rarity {
-    font-size: 11px;
-    font-weight: bold;
-    margin-bottom: 2px;
-}
+.fish-rarity { font-size: 11px; font-weight: bold; margin-bottom: 2px; }
 
 .rarity-1 { color: #555; }
 .rarity-2 { color: #d97706; }
 .rarity-3 { color: #db2777; }
+.rarity-4 { color: #7c3aed; }
 
-.fish-name {
-    font-size: 12px;
-    font-weight: bold;
-    margin: 4px 0 2px;
-}
-
-.fish-count {
-    font-size: 10px;
-    color: #666;
-    line-height: 1.3;
-}
+.fish-name { font-size: 12px; font-weight: bold; margin: 4px 0 2px; }
+.fish-count { font-size: 10px; color: #666; line-height: 1.3; }
 
 @media screen and (max-width: 600px) {
-    .fish-dex-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .fish-dex-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+#top img { width: 20%; max-width: 180px; height: auto; }
+#top img.profile-img { width: 20%; max-width: 160px; height: auto; }
 
-#top img {
-    width: 20%; 
-    max-width: 180px; 
-    height: auto;
-}
+.section-desc { font-size: 14px; color: #555; margin-bottom: 15px; }
 
-/* プロフィール画像を少し小さく調整 */
-#top img.profile-img {
-    width: 20%;
-    max-width: 160px;
-    height: auto;
-}
+.work-card { cursor: pointer; transition: transform 0.2s, opacity 0.2s; position: relative; }
+.work-card:hover { transform: translateY(-3px); opacity: 0.9; }
 
-.section-desc {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-/* 写真カードのホバー演出強化 */
-.work-card {
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.2s;
-}
-
-.work-card:hover {
-    transform: translateY(-3px);
-    opacity: 0.9;
-}
-
-/* 写真拡大モーダル（ライトボックス） */
 .photo-modal {
     position: fixed;
     inset: 0;
@@ -740,10 +669,7 @@ body.weather-rainy {
     transition: opacity 0.25s ease;
 }
 
-.photo-modal.active {
-    opacity: 1;
-    pointer-events: auto;
-}
+.photo-modal.active { opacity: 1; pointer-events: auto; }
 
 .photo-modal-content {
     background: #ffffff;
@@ -758,25 +684,9 @@ body.weather-rainy {
     text-align: center;
 }
 
-.photo-modal-content img {
-    width: 100%;
-    max-height: 60vh;
-    object-fit: contain;
-    border: 1px solid #ddd;
-    margin-bottom: 15px;
-}
-
-.photo-modal-content h4 {
-    margin: 10px 0 5px;
-    font-size: 18px;
-}
-
-.photo-modal-content p {
-    margin: 0;
-    font-size: 14px;
-    color: #555;
-    line-height: 1.5;
-}
+.photo-modal-content img { width: 100%; max-height: 60vh; object-fit: contain; border: 1px solid #ddd; margin-bottom: 15px; }
+.photo-modal-content h4 { margin: 10px 0 5px; font-size: 18px; }
+.photo-modal-content p { margin: 0; font-size: 14px; color: #555; line-height: 1.5; }
 
 .modal-close {
     position: absolute;
@@ -788,14 +698,7 @@ body.weather-rainy {
     color: #000;
 }
 
-.modal-close:hover {
-    color: #e63946;
-}
-
-/* ================= 写真のいいねボタン ================= */
-.work-card {
-    position: relative;
-}
+.modal-close:hover { color: #e63946; }
 
 .like-btn {
     position: absolute;
@@ -814,17 +717,9 @@ body.weather-rainy {
     z-index: 5;
 }
 
-.like-btn:hover {
-    transform: scale(1.08);
-}
+.like-btn:hover { transform: scale(1.08); }
+.like-btn.liked { background: #e63946; color: #ffffff; border-color: #e63946; }
 
-.like-btn.liked {
-    background: #e63946;
-    color: #ffffff;
-    border-color: #e63946;
-}
-
-/* 写真投稿フォームのデザイン */
 .upload-form-container {
     border: 1px solid #000000;
     background: #fbfbfb;
@@ -833,21 +728,9 @@ body.weather-rainy {
     max-width: 600px;
 }
 
-.upload-form-container h4 {
-    margin: 0 0 12px 0;
-    font-size: 15px;
-}
-
-.upload-form-container .form-group {
-    margin-bottom: 10px;
-    font-size: 13px;
-}
-
-.upload-form-container .form-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
+.upload-form-container h4 { margin: 0 0 12px 0; font-size: 15px; }
+.upload-form-container .form-group { margin-bottom: 10px; font-size: 13px; }
+.upload-form-container .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
 
 .upload-form-container input[type="text"],
 .upload-form-container input[type="number"],
@@ -859,7 +742,4 @@ body.weather-rainy {
     background: #ffffff;
 }
 
-.upload-form-container button {
-    width: 100%;
-    margin-top: 4px;
-}
+.upload-form-container button { width: 100%; margin-top: 4px; }
