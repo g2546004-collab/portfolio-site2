@@ -300,7 +300,7 @@ const FLOATS = [
     { id: "none", name: "ノーマルウキ", rarityBonus: 0, price: 0 },
     { id: "float_s", name: "名人のウキ・小", rarityBonus: 1, price: 1500, desc: "レア度2以上の魚が釣りやすくなる" },
     { id: "float_m", name: "名人のウキ・中", rarityBonus: 2, price: 5000, desc: "レア度3の出現率がアップする" },
-    { id: "float_l", name: "伝説のウキ・大", rarityBonus: 3, price: 12000, desc: "星4の魚（約5%）やレア魚が続出する最強のウキ！" }
+    { id: "float_l", name: "伝説のウキ・大", rarityBonus: 3, price: 12000, desc: "星4の魚やレア魚が続出する最強のウキ！" }
 ];
 
 let playerMoney = Number(localStorage.getItem("natsumu_money")) || 0;
