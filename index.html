@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Natsumu Abe - Photography Portfolio</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <a href="#top">Natsumu Abe</a>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#photos">Photos</a>
+                <a href="#fishing">Fishing</a>
+            </nav>
+        </header>
+        <main>
+            <section id="top">
+                <img src="media/19FC2E95-E043-4C89-8207-9A310D10FA5E.jpg" class="profile-img" alt="Profile Image">
+                <h1>
+                    Natsumu Abe<br>
+                    Portfolio
+                </h1>
+                <p id="weather-icon"> </p>
+            </section>
+            
+            <section id="about">
+                <h3>About</h3>
+                <p>
+                    阿部 和紡<br>
+                    東京都市大学 デザイン・データ科学部
+                </p>
+                <p>
+                    趣味：写真撮影、バスケ、ゲーム、散歩<br>
+                    特技：ラテアート
+                </p>
+            </section>
+
+            <!-- 写真ギャラリーセクション -->
+            <section id="photos">
+                <h3>Photos</h3>
+                <p class="section-desc">これまで自分で撮影したお気に入りの写真たち。クリックすると大きく表示されます。</p>
+                
+                <!-- 写真投稿フォーム -->
+                <div class="upload-form-container">
+                    <h4>新しい写真を投稿する</h4>
+                    <form id="photo-upload-form">
+                        <div class="form-group">
+                            <label>画像を選択：</label>
+                            <input type="file" id="upload-file" accept="image/*" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="upload-title" placeholder="タイトル" required>
+                            <input type="text" id="upload-category" placeholder="カテゴリ (例: 風景, スナップ)" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="upload-desc" placeholder="説明・コメント">
+                            <input type="number" id="upload-year" value="2026" placeholder="年">
+                        </div>
+                        <button type="submit" class="game-btn">投稿してギャラリーに追加</button>
+                    </form>
+                </div>
+
+                <div class="works-controls">
+                    <select id="category">
+                        <option value="all">すべてのカテゴリ</option>
+                        <option value="liked">♥ いいねした写真のみ</option>
+                    </select>
+                    <select id="sort">
+                        <option value="new">新しい順</option>
+                        <option value="old">古い順</option>
+                        <option value="title">タイトル順</option>
+                    </select>
+                </div>
+                <div id="works-grid"></div>
+            </section>
+
+            <!-- 写真拡大モーダル -->
+            <div class="photo-modal" id="photo-modal">
+                <div class="photo-modal-content">
+                    <span class="modal-close" id="modal-close">&times;</span>
+                    <img id="modal-img" src="" alt="Expanded Photo">
+                    <h4 id="modal-title"></h4>
+                    <p id="modal-desc"></p>
+                </div>
+            </div>
+
+            <!-- 釣りミニゲームセクション -->
+            <section id="fishing">
+                <h3>Fishing Mini-Game</h3>
+                <p class="fishing-desc">
+                    タイミングよく「釣り上げる！」（または <strong>Spaceキー</strong>）を押して全15種の魚をコンプリートしよう。
+                </p>
+
+                <!-- 天気ステータスカード -->
+                <div class="weather-status-card" id="weather-status-card">
+                    <div class="weather-badge-icon" id="weather-badge-icon">⛅</div>
+                    <div class="weather-info-text">
+                        <strong id="weather-title">現地の天気を取得中...</strong>
+                        <span id="weather-bonus-text">Open-Meteo APIから東京の気象データをロードしています。</span>
+                    </div>
+                </div>
+
+                <div class="fishing-board" id="fishing-board">
+                    <div class="fishing-pond" id="fishing-pond">
+                        <div class="rain-layer" id="rain-layer"></div>
+                        <div class="sky-decor" id="sky-decor"></div>
+
+                        <svg class="fishing-line-svg" viewBox="0 0 600 220" preserveAspectRatio="none">
+                            <path id="fishing-line" d="M 60,0 Q 180,90 300,115" fill="none" stroke="#333" stroke-width="1.5" stroke-dasharray="3,2" opacity="0" />
+                        </svg>
+
+                        <div class="bobber-wrapper" id="bobber">
+                            <svg width="26" height="44" viewBox="0 0 26 44">
+                                <line x1="13" y1="0" x2="13" y2="12" stroke="#111" stroke-width="2" />
+                                <circle cx="13" cy="2" r="2.5" fill="#ff3b30" />
+                                <path d="M 5,22 C 5,13 21,13 21,22 Z" fill="#e63946" stroke="#111" stroke-width="1.5" />
+                                <path d="M 5,22 C 5,31 21,31 21,22 Z" fill="#ffffff" stroke="#111" stroke-width="1.5" />
+                                <line x1="13" y1="30" x2="13" y2="40" stroke="#111" stroke-width="2" />
+                            </svg>
+                        </div>
+
+                        <div class="hit-alert" id="hit-alert">HIT!!</div>
+                        <div class="water-ripples" id="water-ripples"></div>
+
+                        <div class="water-area">
+                            <div class="wave wave1"></div>
+                            <div class="wave wave2"></div>
+                            <div class="fish-shadow shadow-1"></div>
+                            <div class="fish-shadow shadow-2"></div>
+                            <div class="fish-shadow shadow-big"></div>
+                        </div>
+
+                        <div class="catch-modal" id="catch-modal">
+                            <div class="catch-card" id="catch-card">
+                                <span class="catch-badge" id="catch-badge">NEW!</span>
+                                <div class="catch-rarity" id="catch-rarity">★★★</div>
+                                <div class="catch-illust" id="catch-illust"></div>
+                                <h4 class="catch-name" id="catch-name">クロマグロ</h4>
+                                <p class="catch-desc" id="catch-desc">説明文</p>
+                                <button id="close-modal-btn" class="game-btn">続ける</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fishing-status" id="fishing-status">
+                        「キャストする」を押して釣りを始めよう
+                    </div>
+
+                    <div class="timing-gauge-container" id="timing-container">
+                        <div class="timing-labels">
+                            <span>MISS</span>
+                            <span>GOOD TIMING!</span>
+                            <span>MISS</span>
+                        </div>
+                        <div class="timing-bar">
+                            <div class="target-zone" id="target-zone"></div>
+                            <div class="cursor" id="cursor"></div>
+                        </div>
+                    </div>
+
+                    <div class="fishing-controls">
+                        <button id="cast-btn" class="game-btn">キャストする</button>
+                        <button id="hook-btn" class="game-btn action-btn" disabled>釣り上げる！</button>
+                    </div>
+                </div>
+
+                <div class="fish-dex-header">
+                    <h4>釣果図鑑 (<span id="dex-count">0</span> / 15)</h4>
+                    <button id="reset-dex-btn" class="reset-btn">記録リセット</button>
+                </div>
+                <div id="fish-dex-grid" class="fish-dex-grid"></div>
+            </section>
+        </main>
+        <footer>
+            <span>© 2026 Natsumu Abe</span>
+        </footer>
+        <script src="works.js"></script>
+    </body>
+</html>

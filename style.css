@@ -1,0 +1,865 @@
+* { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 50px;
+}
+
+body {
+    background-color: white;
+    transition: background-color 1s;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    padding: 0px 30px;
+    background: #ffffff;
+    height: 75px;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+nav {
+    display: flex;
+    gap: 28px;
+}
+
+section {
+    padding: 20px 30px;
+}
+
+footer {
+    padding: 20px 30px;
+    font-size: 11px;
+    text-align: center;
+}
+
+#top {
+    padding-top: 100px;
+}
+
+#works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.work-card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+.work-card {
+    border: 1px solid #000000;
+    background: #fff;
+}
+
+.work-card h4 {
+    margin: 15px 15px 5px;
+}
+
+.work-card p {
+    margin: 0 15px 15px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.work-card:hover {
+    opacity: 0.7;
+}
+
+.works-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.works-controls select {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.work-category {
+    font-size: 12px;
+    padding-top: 14px;
+    color: #9c9c9c;
+}
+
+.work-year {
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+/* スマートフォン対応 */
+@media screen and (max-width: 600px) {
+    #top {
+        padding-top: 80px;
+    }
+    #top img {
+        width: 100%;
+    }
+    #works-grid {
+        grid-template-columns: 1fr;
+    }
+    .works-controls {
+        flex-direction: column;
+    }
+}
+
+/* 天気アイコン */
+#weather-icon {
+    font-size: 60px;
+    margin: 10px 0 0 0;
+}
+
+/* 天気連動背景色 */
+body.weather-sunny {
+    background-color: #e8ddc9;
+}
+
+body.weather-cloudy {
+    background-color: #dfe3e8;
+}
+
+body.weather-rainy {
+    background-color: #cbd9e5;
+}
+
+/* ================= 釣りミニゲーム ＆ グラフィック強化 ================= */
+.fishing-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.weather-status-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #000000;
+    background: #f9f9f9;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    max-width: 600px;
+    transition: background-color 0.5s;
+}
+
+.weather-badge-icon {
+    font-size: 32px;
+}
+
+.weather-info-text {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.weather-info-text strong {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.fishing-board {
+    border: 1px solid #000000;
+    background: #ffffff;
+    padding: 25px;
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.fishing-board.shake {
+    animation: boardShake 0.35s ease-in-out;
+}
+
+@keyframes boardShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px) rotate(-0.5deg); }
+    40% { transform: translateX(6px) rotate(0.5deg); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+.fishing-pond {
+    position: relative;
+    height: 220px;
+    background: linear-gradient(180deg, #eef5f9 0%, #d8e8f2 100%);
+    border: 1px solid #000000;
+    overflow: hidden;
+    user-select: none;
+}
+
+.fishing-pond.bg-sunny {
+    background: linear-gradient(180deg, #fffdf9 0%, #f7ebd2 100%);
+}
+
+.fishing-pond.bg-cloudy {
+    background: linear-gradient(180deg, #f2f4f7 0%, #dce1e7 100%);
+}
+
+.fishing-pond.bg-rainy {
+    background: linear-gradient(180deg, #dde6ef 0%, #b5c6d6 100%);
+}
+
+.sky-decor {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 28px;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.rain-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+    overflow: hidden;
+}
+
+.raindrop {
+    position: absolute;
+    width: 1.5px;
+    height: 14px;
+    background: rgba(60, 100, 140, 0.45);
+    top: -20px;
+    animation: rainFall linear infinite;
+}
+
+@keyframes rainFall {
+    to { transform: translate(-15px, 240px); }
+}
+
+.fishing-line-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.bobber-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 86px;
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0;
+    z-index: 3;
+    transition: opacity 0.3s, top 0.3s;
+}
+
+.bobber-wrapper.casted {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    animation: bobberFloat 2.2s infinite ease-in-out;
+}
+
+.bobber-wrapper.biting {
+    opacity: 1;
+    top: 98px;
+    animation: bobberBite 0.12s infinite alternate;
+}
+
+@keyframes bobberFloat {
+    0%, 100% { transform: translate(-50%, 0px); }
+    50% { transform: translate(-50%, -5px); }
+}
+
+@keyframes bobberBite {
+    0% { transform: translate(-50%, 4px) rotate(-14deg); }
+    100% { transform: translate(-50%, 10px) rotate(14deg); }
+}
+
+.water-ripples {
+    position: absolute;
+    left: 50%;
+    top: 112px;
+    width: 10px;
+    height: 4px;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.water-ripples.active {
+    animation: rippleExpand 1.2s infinite ease-out;
+}
+
+@keyframes rippleExpand {
+    0% { width: 14px; height: 5px; opacity: 0.9; }
+    100% { width: 110px; height: 26px; opacity: 0; }
+}
+
+.hit-alert {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    background: #000000;
+    color: #ffffff;
+    padding: 4px 14px;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    opacity: 0;
+    z-index: 5;
+    transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hit-alert.active {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+}
+
+.water-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(180deg, rgba(41, 128, 185, 0.22) 0%, rgba(26, 82, 118, 0.45) 100%);
+    border-top: 1.5px solid rgba(0, 0, 0, 0.35);
+    z-index: 2;
+    overflow: hidden;
+}
+
+.wave {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 200%;
+    height: 12px;
+    background: repeating-radial-gradient(circle at 15px 6px, transparent 0, transparent 10px, rgba(255,255,255,0.4) 11px, rgba(255,255,255,0.4) 12px);
+    animation: waveMove 6s linear infinite;
+}
+
+.wave2 {
+    top: -3px;
+    opacity: 0.5;
+    animation: waveMove 9s linear infinite reverse;
+}
+
+@keyframes waveMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.fish-shadow {
+    position: absolute;
+    background: rgba(15, 35, 55, 0.25);
+    border-radius: 50% 60% 60% 50% / 50%;
+    filter: blur(1px);
+}
+
+.fish-shadow::after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    top: 20%;
+    border-left: 8px solid rgba(15, 35, 55, 0.25);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+.shadow-1 {
+    width: 28px;
+    height: 10px;
+    top: 25px;
+    animation: swimRight 11s infinite linear;
+}
+
+.shadow-2 {
+    width: 36px;
+    height: 13px;
+    top: 55px;
+    animation: swimLeft 15s infinite linear;
+}
+
+.shadow-big {
+    width: 65px;
+    height: 20px;
+    top: 78px;
+    background: rgba(15, 35, 55, 0.18);
+    animation: swimRight 22s infinite linear;
+}
+
+@keyframes swimRight {
+    0% { left: -80px; transform: scaleX(1); }
+    100% { left: 650px; transform: scaleX(1); }
+}
+
+@keyframes swimLeft {
+    0% { left: 650px; transform: scaleX(-1); }
+    100% { left: -80px; transform: scaleX(-1); }
+}
+
+.catch-modal {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+}
+
+.catch-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.catch-card {
+    text-align: center;
+    padding: 12px 20px;
+    border: 1.5px solid #000000;
+    background: #ffffff;
+    width: 82%;
+    max-width: 340px;
+    box-shadow: 4px 4px 0px #000000;
+    transform: translateY(10px);
+    transition: transform 0.25s;
+}
+
+.catch-modal.active .catch-card {
+    transform: translateY(0);
+}
+
+.catch-card.rare-glow-2 {
+    border-color: #d97706;
+    box-shadow: 4px 4px 0px #d97706;
+}
+
+.catch-card.rare-glow-3 {
+    border-color: #db2777;
+    box-shadow: 4px 4px 0px #db2777;
+    background: linear-gradient(135deg, #fff 0%, #fff0f6 100%);
+}
+
+.catch-badge {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    margin-bottom: 2px;
+}
+
+.catch-rarity {
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.catch-illust {
+    margin: 4px auto;
+    height: 54px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.catch-name {
+    margin: 2px 0 4px;
+    font-size: 18px;
+}
+
+.catch-desc {
+    margin: 0 0 10px;
+    font-size: 11px;
+    color: #444;
+    line-height: 1.4;
+}
+
+.catch-card .game-btn {
+    padding: 6px 18px;
+    font-size: 12px;
+}
+
+.fishing-status {
+    margin: 16px 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    min-height: 22px;
+}
+
+.timing-gauge-container {
+    margin: 16px 0;
+    opacity: 0.3;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.timing-gauge-container.active {
+    opacity: 1;
+}
+
+.timing-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.timing-bar {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background: repeating-linear-gradient(
+        45deg,
+        #f5f5f5,
+        #f5f5f5 8px,
+        #ebebeb 8px,
+        #ebebeb 16px
+    );
+    border: 1px solid #000000;
+}
+
+.target-zone {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: #2e7d32;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    left: 40%;
+    width: 20%;
+}
+
+.target-zone.rare-2 {
+    background: #ef6c00;
+}
+
+.target-zone.rare-3 {
+    background: #c2185b;
+}
+
+.cursor {
+    position: absolute;
+    top: -5px;
+    left: 0%;
+    width: 6px;
+    height: 38px;
+    background: #000000;
+    box-shadow: 0 0 0 1px #ffffff;
+}
+
+.fishing-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.game-btn {
+    padding: 12px 26px;
+    font-size: 14px;
+    font-weight: bold;
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.game-btn:hover:not(:disabled) {
+    background: #000000;
+    color: #ffffff;
+}
+
+.game-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.action-btn:not(:disabled) {
+    background: #000000;
+    color: #ffffff;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: #333333;
+}
+
+.fish-dex-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    max-width: 600px;
+}
+
+.fish-dex-header h4 {
+    margin: 0;
+}
+
+.reset-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    background: transparent;
+    border: 1px solid #999;
+    color: #666;
+    cursor: pointer;
+}
+
+.fish-dex-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    max-width: 600px;
+}
+
+.fish-card {
+    border: 1px solid #000000;
+    background: #ffffff;
+    padding: 10px 8px;
+    text-align: center;
+    transition: transform 0.15s;
+}
+
+.fish-card:not(.locked):hover {
+    transform: translateY(-2px);
+}
+
+.fish-card.locked {
+    background: #f7f7f7;
+    color: #999999;
+    border-color: #cccccc;
+}
+
+.fish-svg-box {
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.fish-card.locked .fish-svg-box svg {
+    filter: brightness(0) opacity(0.18);
+}
+
+.fish-rarity {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.rarity-1 { color: #555; }
+.rarity-2 { color: #d97706; }
+.rarity-3 { color: #db2777; }
+
+.fish-name {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 4px 0 2px;
+}
+
+.fish-count {
+    font-size: 10px;
+    color: #666;
+    line-height: 1.3;
+}
+
+@media screen and (max-width: 600px) {
+    .fish-dex-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+#top img {
+    width: 20%; 
+    max-width: 180px; 
+    height: auto;
+}
+
+/* プロフィール画像を少し小さく調整 */
+#top img.profile-img {
+    width: 20%;
+    max-width: 160px;
+    height: auto;
+}
+
+.section-desc {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* 写真カードのホバー演出強化 */
+.work-card {
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.work-card:hover {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* 写真拡大モーダル（ライトボックス） */
+.photo-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.photo-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.photo-modal-content {
+    background: #ffffff;
+    border: 2px solid #000000;
+    padding: 20px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 6px 6px 0px #000;
+    text-align: center;
+}
+
+.photo-modal-content img {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.photo-modal-content h4 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.photo-modal-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+}
+
+.modal-close:hover {
+    color: #e63946;
+}
+
+/* ================= 写真のいいねボタン ================= */
+.work-card {
+    position: relative;
+}
+
+.like-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    padding: 5px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.15s, background 0.2s, color 0.2s;
+    z-index: 5;
+}
+
+.like-btn:hover {
+    transform: scale(1.08);
+}
+
+.like-btn.liked {
+    background: #e63946;
+    color: #ffffff;
+    border-color: #e63946;
+}
+
+/* 写真投稿フォームのデザイン */
+.upload-form-container {
+    border: 1px solid #000000;
+    background: #fbfbfb;
+    padding: 18px 20px;
+    margin-bottom: 25px;
+    max-width: 600px;
+}
+
+.upload-form-container h4 {
+    margin: 0 0 12px 0;
+    font-size: 15px;
+}
+
+.upload-form-container .form-group {
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.upload-form-container .form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.upload-form-container input[type="text"],
+.upload-form-container input[type="number"],
+.upload-form-container input[type="file"] {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 13px;
+    border: 1px solid #000000;
+    background: #ffffff;
+}
+
+.upload-form-container button {
+    width: 100%;
+    margin-top: 4px;
+}
